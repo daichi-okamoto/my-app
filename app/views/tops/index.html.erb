@@ -1,7 +1,43 @@
-<h1 class="text-3xl font-bold underline">
-  Hello world!
-</h1>
-
-<button class="bg-gray-900 hover:bg-gray-800 text-white rounded px-4 py-2">tailwind</button>
-
-<button class="btn">daisyUI</button>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+  <header class="shadow-md z-50 ">
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl flex items-center font-mono text-black">
+          <span class="material-symbols-outlined">
+            <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
+          </span>
+          Care Shift
+        </a>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <li class="mr-2"><a class="btn border-blue bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue">ログイン</a></li>
+          <li class="mr-2"><a class="btn btn-primary text-white rounded hover:text-blue hover:bg-white ">新規登録</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <div class="hero min-h-screen">
+    <div class="hero-overlay">
+      <div class="relative hero min-h-screen bg-cover bg-center" style="background-image: url('images/worker2.jpeg');">
+        <div class="bg-blue opacity-40 absolute inset-0"></div>
+        <div class="hero-content text-center text-neutral-content">
+          <div class="max-w-md">
+            <h1 class="mb-5 text-5xl font-bold text-white">シフト作成を自動化</h1>
+            <p class="mb-5">介護施設に特化したシフト自動作成サービス<br>「Care Shift」です。</p>
+            <a class="btn btn-primary text-white rounded hover:bg-navy hover:underline ">今すぐ登録</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
