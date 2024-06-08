@@ -16,7 +16,8 @@ module.exports = {
       'navy': '#4776e6',
       'dark': '#0c1322',
       'light-gray': '#3b4351',
-      'whitesmoke': '#f5f5f5'
+      'whitesmoke': '#f5f5f5',
+      'gray-100': '#DDDDDD',
     },
     fontFamily: {
       mono: ['Geologica', 'sans-serif']
