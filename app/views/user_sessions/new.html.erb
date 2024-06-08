@@ -1,17 +1,25 @@
 <header class="shadow-sm">
   <div class="navbar bg-base-100">
     <div class="flex-1">
-      <a class="btn btn-ghost text-xl flex items-center font-mono text-black">
-        <span class="material-symbols-outlined">
-          <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
-        </span>
+      <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center font-mono text-black" do %>
+      <span class="material-symbols-outlined">
+        <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
+      </span>
         Care Shift
-      </a>
+      <% end %>
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal px-1">
-        <li class="mr-2"><a class="btn border-blue bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7">ログイン</a></li>
-        <li class="mr-2"><a class="btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white ">新規登録</a></li>
+        <li class="mr-2">
+          <%= link_to login_path, class: "btn border-blue bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7" do %>
+          ログイン
+          <% end %>
+        </li>
+        <li class="mr-2">
+          <%= link_to new_user_path, class: "btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white" do %>
+          新規登録
+          <% end %>
+        </li>
       </ul>
     </div>
   </div>
@@ -23,26 +31,24 @@
     </div>
     <div class="card bg-base-100 shadow-xl z-20 rounded">
       <div class="card-body">
+        <%= form_with model: @user do |f| %>
         <div class="pb-4 pl-4">
-          <span class="text-black">メールアドレス</span>
-          <label class="input input-bordered flex items-center gap-2 rounded border-gray w-64">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
-            <input type="text" class="grow" placeholder="Email" />
-          </label>
+          <%= f.label :メールアドレス, class: "text-black"%>
+          <%= f.text_field :email, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "email"%>
         </div>
-        <div class="pb-2 pl-4">
-          <span class="text-black">パスワード</span>
-          <label class="input input-bordered flex items-center gap-2 border-gray rounded w-64">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
-            <input type="password" class="grow" placeholder="password" />
-          </label>
+        <div class="pb-8 pl-4">
+          <%= f.label :パスワード, class: "text-black"%>
+          <%= f.password_field :password, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "password"%>
         </div>
-        <div class="text-right pr-4 pb-4">
-          <p class="text-xs pb-2">パスワードを忘れた方は<span class="text-blue hover:border-b"><a href="">こちら</a></span></p>
-          <p class="text-xs">新規登録は<span class="text-blue hover:border-b"><a href="">こちら</a></span></p>
+        <div class="card-actions items-center pl-4 pb-8">
+          <%= link_to :"ログイン", '#', class: "btn btn-primary text-white rounded hover:bg-navy hover:underline btn-wide" %>
         </div>
-        <div class="card-actions items-center pl-4">
-          <button class="btn btn-primary text-white rounded hover:bg-navy hover:underline btn-wide">ログイン</button>
+        <% end %>
+        <div class="text-right pr-4 pb-2">
+          <p class="text-xs pb-2">パスワードを忘れた方は <%= link_to :こちら, '#', class: "text-blue hover:border-b"%></p>
+          <p class="text-xs pb-2">新規登録は <%= link_to :こちら, new_user_path, class: "text-blue hover:border-b"%></p>
+          <!-- <p class="text-xs pb-2">パスワードを忘れた方は<span class="text-blue hover:border-b"><a href="">こちら</a></span></p>
+          <p class="text-xs">新規登録は<span class="text-blue hover:border-b"><a href="">こちら</a></span></p> -->
         </div>
       </div>
     </div>

@@ -8,20 +8,28 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-  <header class="shadow-md z-auto">
+  <header class="shadow-sm">
     <div class="navbar bg-base-100">
       <div class="flex-1">
-        <a class="btn btn-ghost text-xl flex items-center font-mono text-black">
-          <span class="material-symbols-outlined">
-            <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
-          </span>
+        <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center font-mono text-black" do %>
+        <span class="material-symbols-outlined">
+          <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
+        </span>
           Care Shift
-        </a>
+        <% end %>
       </div>
       <div class="flex-none">
         <ul class="menu menu-horizontal px-1">
-          <li class="mr-2"><a class="btn border-blue bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7">ログイン</a></li>
-          <li class="mr-2"><a class="btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white ">新規登録</a></li>
+          <li class="mr-2">
+            <%= link_to login_path, class: "btn border-blue bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7" do %>
+            ログイン
+            <% end %>
+          </li>
+          <li class="mr-2">
+            <%= link_to new_user_path, class: "btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white" do %>
+            新規登録
+            <% end %>
+          </li>
         </ul>
       </div>
     </div>
@@ -34,7 +42,9 @@
             <div class="max-w-md">
               <h1 class="mb-5 text-5xl font-bold text-white">シフト作成を自動化</h1>
               <p class="mb-5">介護施設に特化したシフト自動作成サービス<br>「Care Shift」です。</p>
-              <a class="btn btn-primary text-white rounded hover:bg-navy hover:underline  px-10 ">今すぐ登録</a>
+              <%= link_to new_user_path, class: "btn btn-primary text-white rounded hover:bg-navy hover:underline px-10" do %>
+                今すぐ登録
+              <% end %>
             </div>
           </div>
         </div>
@@ -54,7 +64,7 @@
             </div>
               <h3 class="text-4xl mb-8 text-black">シフト作成</h3>
               <p class="text-gray mb-8">メンバーを追加して、シフト作成ボタンを押すだけで1ヶ月分のシフトを作成することができます。直感的で誰でも簡単に操作できます。</p>
-              <a class="text-blue text-sm hover:underline" href="">登録はこちらから</a>
+              <%= link_to '登録はこちらから', new_user_path, class: 'text-blue text-sm hover:underline' %>
             </div>
           </div>
         </div>
@@ -72,7 +82,7 @@
             </div>
               <h3 class="text-4xl mb-8 text-black">シフト作成</h3>
               <p class="text-gray mb-8">メンバーを追加して、シフト作成ボタンを押すだけで1ヶ月分のシフトを作成することができます。直感的で誰でも簡単に操作できます。</p>
-              <a class="text-blue text-sm hover:underline" href="">登録はこちらから</a>
+              <%= link_to '登録はこちらから', new_user_path, class: 'text-blue text-sm hover:underline' %>
             </div>
           <div class=""><img src="images/shift.jpg" alt="" width="1100px"></div>
           </div>
@@ -92,7 +102,7 @@
             </div>
               <h3 class="text-4xl mb-8 text-black">シフト作成</h3>
               <p class="text-gray mb-8">メンバーを追加して、シフト作成ボタンを押すだけで1ヶ月分のシフトを作成することができます。直感的で誰でも簡単に操作できます。</p>
-              <a class="text-blue text-sm hover:underline" href="">登録はこちらから</a>
+              <%= link_to '登録はこちらから', new_user_path, class: 'text-blue text-sm hover:underline' %>
             </div>
           </div>
         </div>
