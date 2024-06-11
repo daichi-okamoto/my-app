@@ -18,6 +18,7 @@ module.exports = {
       'light-gray': '#3b4351',
       'whitesmoke': '#f5f5f5',
       'gray-100': '#DDDDDD',
+      'beige': '#e8d3ca',
     },
     fontFamily: {
       mono: ['Geologica', 'sans-serif']

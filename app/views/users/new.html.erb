@@ -24,6 +24,7 @@
     </div>
   </div>
 </header>
+<%= render 'layouts/flash_messages' %>
 <div class="hero min-h-screen bg-whitesmoke">
   <div class="w-screen px-4 my-12 max-w-sm">
     <div class="">
@@ -32,24 +33,24 @@
     <div class="card bg-base-100 shadow-xl z-20 rounded">
       <div class="card-body">
         <%= form_with model: @user do |f| %>
-        <div class="pb-4 pl-4">
+        <div class="pb-4 pl-4"> 
           <%= f.label :メールアドレス, class: ""%>
-          <%= f.text_field :email, class: "input input-bordered flex items-center gap-2 rounded border-gray w-64", placeholder: "email" %>
+          <%= f.text_field :email, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "email" %>
         </div>
         <div class="pb-4 pl-4">
           <%= f.label :パスワード, class: ""%>
-          <%= f.password_field :password, class: "input input-bordered flex items-center gap-2 rounded border-gray w-64", placeholder: "password" %>
+          <%= f.password_field :password, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "password" %>
         </div>
         <div class="pb-8 pl-4">
           <%= f.label :パスワード確認, class: ""%>
-          <%= f.password_field :password_confirmation, class: "input input-bordered flex items-center gap-2 rounded border-gray w-64", placeholder: "password_confirmation" %>
+          <%= f.password_field :password_confirmation, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "password_confirmation" %>
         </div>
         <div class="card-actions items-center pl-4 pb-4">
           <%= f.submit "登録", class: "btn btn-primary text-white rounded hover:bg-navy hover:underline btn-wide" %>
         </div>
         <% end %>
         <div class="text-xs text-right pr-4 pt-4">
-          <span>すでにアカウントを持っている方は</span><%= link_to :'こちら', login_path, class: 'text-blue hover:border-b' %>
+          <span>すでに登録済みの方は</span><%= link_to :'こちら', login_path, class: 'text-blue hover:border-b' %>
         </div>
       </div>
     </div>
