@@ -1,5 +1,6 @@
 
-<header class="shadow-sm">
+<body class="flex flex-col h-screen">
+<header class="shadow-sm border-b border-gray border-opacity-30">
   <div class="navbar bg-base-100">
     <div class="flex-1">
       <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center font-mono text-black" do %>
@@ -10,107 +11,85 @@
       <% end %>
     </div>
     <div class="flex-none">
-      <ul class="menu menu-horizontal px-1">
-        <li class="mr-2">
-          <%= link_to login_path, class: "btn border-blue bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7" do %>
-          ログイン
-          <% end %>
+      <ul class="menu menu-horizontal">
+        <li class="">
+          <div class="w-16">
+            <img src="/images/bell.svg" alt="">
+          </div>
         </li>
         <li class="mr-2">
-          <%= link_to new_user_path, class: "btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white" do %>
+          <div class="flex-none p-0">
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+              <div class="w-11 rounded-full hover:bg-blue hover:bg-opacity-30">
+                <img alt="" src="/images/acount.svg" class="">
+              </div>
+            </div>
+            <div tabindex="0" class="z-[1] card card-compact dropdown-content w-44 bg-whitesmoke shadow">
+              <div class="card-body">
+                <%= link_to logout_path, class:"btn btn-ghost btn-sm text-black text-sm hover:text-soft-blue hover:bg-purple hover:bg-opacity-10", data: { turbo_method: :delete } do %>
+                  ログアウト
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <!-- <%= link_to new_user_path, class: "btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white" do %>
           新規登録
-          <% end %>
+          <% end %> -->
         </li>
       </ul>
     </div>
   </div>
 </header>
-
-<nav class="bg-white shadow-lg h-screen fixed top-0 left-0 min-w-[240px] py-6 px-4 font-[sans-serif] overflow-auto">
-  <ul>
-    <li>
-      <a href="javascript:void(0)"
-        class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-        Dashboard
-      </a>
-    </li>
-  </ul>
-
-  <div class="mt-4">
-    <h6 class="text-blue-600 text-sm font-bold px-4">Information</h6>
-    <ul class="mt-2">
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Audience
+<div class="flex flex-1">
+  <!-- Sidebar -->
+  <nav class="bg-white shadow-lg w-60 p-4 flex flex-col justify-between">
+    <ul>
+      <li class="mb-2">
+        <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+          <img src="/images/check-calendar.svg" alt="" class="mr-2 w-6 h-6">
+          シフト管理
         </a>
       </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Posts
-        </a>
-      </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Schedules
-        </a>
-      </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Promote
+      <li class="mb-2">
+        <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+          <img src="/images/person.svg" alt="" class="mr-2 w-6 h-6">
+          スタッフ管理
         </a>
       </li>
     </ul>
-  </div>
-
-  <div class="mt-4">
-    <h6 class="text-blue-600 text-sm font-bold px-4">Income</h6>
-    <ul class="mt-2">
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Earnings and taxes
+    <ul>
+      <div class="border-t pb-4 border-gray border-opacity-30"></div>
+      <li class="mb-2">
+        <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+          <img src="/images/help.svg" alt="" class="mr-2 w-6 h-6">
+          お問い合わせ
         </a>
       </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Refunds
+      <li class="mb-2">
+        <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+          <img src="/images/service.svg" alt="" class="mr-2 w-6 h-6">
+          利用規約
         </a>
       </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Declines
-        </a>
-      </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Payouts Details
+      <li class="mb-2">
+        <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+          <img src="/images/privacy.svg" alt="" class="mr-2 w-6 h-6">
+          プライバシーポリシー
         </a>
       </li>
     </ul>
-  </div>
-
-  <div class="mt-4">
-    <h6 class="text-blue-600 text-sm font-bold px-4">Actions</h6>
-    <ul class="mt-2">
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Profile
-        </a>
-      </li>
-      <li>
-        <a href="javascript:void(0)"
-          class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
-          Logout
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
+  </nav>
+  <!-- Main Content -->
+  <main class="flex-1">
+    <div class="staff-container">
+      <div class="staff-title justify-between flex p-4">
+        <div class="text-2xl text-black">スタッフ表</div>
+        <%= link_to '#', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mr-2" do %>
+          スタッフ追加
+        <% end %>
+      </div>
+    </div>
+  </main>
+</div>
+</body>

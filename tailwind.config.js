@@ -19,6 +19,9 @@ module.exports = {
       'whitesmoke': '#f5f5f5',
       'gray-100': '#DDDDDD',
       'beige': '#e8d3ca',
+      'sidebar': '#66758c',
+      'purple': '#807fe2',
+      'soft-blue': '#5755d9',
     },
     fontFamily: {
       mono: ['Geologica', 'sans-serif']

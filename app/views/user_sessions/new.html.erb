@@ -24,6 +24,7 @@
     </div>
   </div>
 </header>
+<%= render 'layouts/flash_messages' %>
 <div class="hero min-h-screen bg-whitesmoke">
   <div class="w-screen px-4 my-12 max-w-sm">
     <div class="">
@@ -31,7 +32,7 @@
     </div>
     <div class="card bg-base-100 shadow-xl z-20 rounded">
       <div class="card-body">
-        <%= form_with model: @user do |f| %>
+        <%= form_with url: login_path, method: :post do |f| %>
         <div class="pb-4 pl-4">
           <%= f.label :メールアドレス, class: "text-black"%>
           <%= f.text_field :email, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "email"%>
@@ -41,26 +42,15 @@
           <%= f.password_field :password, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "password"%>
         </div>
         <div class="card-actions items-center pl-4 pb-8">
-          <%= link_to :"ログイン", '#', class: "btn btn-primary text-white rounded hover:bg-navy hover:underline btn-wide" %>
+          <%= f.submit "ログイン", class: "btn btn-primary text-white rounded hover:bg-navy hover:underline btn-wide" %>
         </div>
         <% end %>
         <div class="text-right pr-4 pb-2">
           <p class="text-xs pb-2">パスワードを忘れた方は<%= link_to :こちら, '#', class: "text-blue hover:border-b"%></p>
           <p class="text-xs pb-2">新規登録は<%= link_to :こちら, new_user_path, class: "text-blue hover:border-b"%></p>
-          <!-- <p class="text-xs pb-2">パスワードを忘れた方は<span class="text-blue hover:border-b"><a href="">こちら</a></span></p>
-          <p class="text-xs">新規登録は<span class="text-blue hover:border-b"><a href="">こちら</a></span></p> -->
         </div>
       </div>
     </div>
   </div>
 </div>
-<footer class="footer footer-center p-10 rounded text-gray text-opacity-50">
-  <nav class="grid grid-flow-col gap-4">
-    <a class="link link-hover">利用規約</a>
-    <a class="link link-hover">プライバシーポリシー</a>
-    <a class="link link-hover">お問い合わせ</a>
-  </nav> 
-  <aside>
-    <p>Copyright © 2024 - Care Shift</p >
-  </aside>
-</footer>
+<%= render 'layouts/footer' %>
