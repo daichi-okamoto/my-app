@@ -1,0 +1,10 @@
+<% flash.each do |message_type, message| %>
+  <div class="<%= flash_design(message_type) %> flex">
+    <% if message_type.to_sym == :success %>
+      <%= image_tag '/images/check.svg', alt: 'Check', class: 'pr-2' %> 
+    <% else %>
+      <%= image_tag '/images/close.svg', alt: 'Check', class: 'pr-2' %> 
+    <% end %>
+    <%= message %>
+  </div>
+<% end %>
