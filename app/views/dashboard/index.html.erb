@@ -25,17 +25,14 @@
                 <img alt="" src="/images/acount.svg" class="">
               </div>
             </div>
-            <div tabindex="0" class="z-[1] card card-compact dropdown-content w-44 bg-whitesmoke shadow">
-              <div class="card-body">
-                <%= link_to logout_path, class:"btn btn-ghost btn-sm text-black text-sm hover:text-soft-blue hover:bg-purple hover:bg-opacity-10", data: { turbo_method: :delete } do %>
-                  ログアウト
-                <% end %>
+            <div tabindex="0" class="z-[1] card card-compact dropdown-content w-44 bg-whitesmoke shadow rounded-sm">
+                <div class="card-body">
+                  <%= link_to logout_path, class:"btn btn-ghost btn-sm text-black text-sm hover:text-soft-blue hover:bg-purple hover:bg-opacity-10 rounded-sm", data: { turbo_method: :delete } do %>
+                    ログアウト
+                  <% end %>
+                </div>
               </div>
-            </div>
           </div>
-          <!-- <%= link_to new_user_path, class: "btn btn-primary px-7 text-white rounded hover:text-blue hover:bg-white" do %>
-          新規登録
-          <% end %> -->
         </li>
       </ul>
     </div>
@@ -85,7 +82,7 @@
     <div class="staff-container">
       <div class="staff-title justify-between flex p-4">
         <div class="text-2xl text-black ml-4">スタッフ表</div>
-        <%= link_to '#', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mr-8" do %>
+        <%= link_to new_employee_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mr-8" do %>
           スタッフ追加
         <% end %>
       </div>
@@ -117,7 +114,10 @@
             </td>
             <td class="border border-gray-100 text-center text-gray text-base ">
               <div class="flex justify-center border-b-0">
-                <div class="btn btn-sm btn-ghost text-blue hover:bg-gray-100 rounded-sm mx-1"><img class="p-0" src="/images/edit.svg" alt=""><span>編集</span></div>
+                <%= link_to '#', class: "btn btn-sm btn-ghost text-blue hover:bg-gray-100 rounded-sm mx-1" do %>
+                <img class="p-0" src="/images/edit.svg" alt=""><span>編集</span>
+                <% end %>
+                <!-- <div class="btn btn-sm btn-ghost text-blue hover:bg-gray-100 rounded-sm mx-1"><img class="p-0" src="/images/edit.svg" alt=""><span>編集</span></div> -->
                 <div class="btn btn-sm btn-ghost text-red hover:bg-gray-100 rounded-sm mx-1"><img class="inline-block m-0 p-0" src="/images/delete.svg" alt=""><span class="">削除</span></div>
               </div>
             </td>
