@@ -25,32 +25,25 @@
   </div>
 </header>
 <%= render 'layouts/flash_messages' %>
-<div class="hero min-h-screen bg-whitesmoke">
-  <div class="w-screen px-4 my-12 max-w-sm">
-    <div class="">
-      <h1 class="text-3xl font-bold text-center mb-4 text-black">ログイン</h1>
+<main class="hero min-h-screen flex items-center justify-center bg-whitesmoke">
+  <div class="bg-white shadow-lg p-6 rounded w-full max-w-md">
+    <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-2">
+      <h2 class="text-2xl font-normal text-gray">ログイン</h2>
+      <%= link_to "新規登録はこちら", new_user_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue" %>
     </div>
-    <div class="card bg-base-100 shadow-xl z-20 rounded">
-      <div class="card-body">
-        <%= form_with url: login_path, method: :post do |f| %>
-        <div class="pb-4 pl-4">
-          <%= f.label :メールアドレス, class: "text-black"%>
-          <%= f.text_field :email, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "email"%>
-        </div>
-        <div class="pb-8 pl-4">
-          <%= f.label :パスワード, class: "text-black"%>
-          <%= f.password_field :password, class: "input input-bordered flex items-center gap-2 rounded w-64 border-gray-100 focus:outline-none", placeholder: "password"%>
-        </div>
-        <div class="card-actions items-center pl-4 pb-8">
-          <%= f.submit "ログイン", class: "btn btn-primary text-white rounded hover:bg-navy hover:underline btn-wide" %>
-        </div>
-        <% end %>
-        <div class="text-right pr-4 pb-2">
-          <p class="text-xs pb-2">パスワードを忘れた方は<%= link_to :こちら, '#', class: "text-blue hover:border-b"%></p>
-          <p class="text-xs pb-2">新規登録は<%= link_to :こちら, new_user_path, class: "text-blue hover:border-b"%></p>
-        </div>
+    <%= form_with url: login_path, method: :post do |f| %>
+      <div class="pt-4">
+        <%= f.label :メールアドレス, class: "block font-medium text-gray"%>
+        <%= f.text_field :email, class: "h-8 input input-primary rounded-sm opacity-50 w-full" %>
       </div>
-    </div>
+      <div class="pt-4">
+        <%= f.label :パスワード, class: "block font-medium text-gray"%>
+          <%= f.password_field :password, class: "h-8 input input-primary rounded-sm opacity-50 w-full" %>
+      </div>
+      <div class="pt-12">
+        <%= f.submit "ログイン", class: "btn btn-primary w-full text-white rounded-sm text-base" %>
+      </div>
+    <% end %>
   </div>
-</div>
+</main>
 <%= render 'layouts/footer' %>

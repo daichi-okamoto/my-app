@@ -28,6 +28,10 @@ module.exports = {
     fontFamily: {
       mono: ['Geologica', 'sans-serif']
     },
+    height: {
+      '128': '32rem',
+      '144': '36rem',
+    },
   },
   daisyui: {
     themes: [
