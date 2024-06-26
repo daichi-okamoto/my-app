@@ -46,10 +46,6 @@
             <img src="/images/person.svg" alt="" class="mr-2 w-6 h-6">
             スタッフ管理
           <% end %>
-          <!-- <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
-            <img src="/images/person.svg" alt="" class="mr-2 w-6 h-6">
-            スタッフ管理
-          </a> -->
         </li>
         <li class="mb-2">
           <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
@@ -84,70 +80,39 @@
       <div class="bg-white shadow-lg p-6 rounded w-full max-w-md">
         <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
           <h2 class="text-2xl font-normal text-gray">スタッフ登録</h2>
-          <%= link_to dashboard_index_path, class:"btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue" do %>
-            戻る
-          <% end %>
-          <!-- <div class="btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue">戻る</div> -->
+          <%= link_to "戻る", dashboard_index_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue" %>
         </div>
-        <div class="space-y-6 pt-4">
-          <div>
-            <div>
-              <label for="name" class="block font-medium text-gray">名前</label>
-            </div>
-            <input type="text" name="name" id="name" class="h-8 input input-primary rounded-sm opacity-50 w-full">
-          </div>
-          <div>
-            <div>
-              <label for="employment" class="block font-medium text-gray">雇用形態</label>
-            </div>
-            <select class="select select-sm select-primary rounded-sm opacity-50 w-full">
-              <option disabled selected>選択してください</option>
-              <option>正社員</option>
-              <option>パート</option>
-              <option>派遣</option>
-            </select>
-          </div>
-          <div>
-            <div>
-              <label for="shift" class="block font-medium text-gray mb-2">勤務可能シフト</label>
-            </div>
-            <form>
-              <div class="flex items-center mb-2">
-                <div class="form-control">
-                  <label class="label">
-                    <input type="checkbox" class="checkbox checkbox-primary rounded-sm w-5 h-5">
-                  </label>
-                </div>
-                <label for="early" class="text-gray">早番</label>
-              </div>
-              <div class="flex items-center mb-2">
-                <div class="form-control">
-                  <label class="label">
-                    <input type="checkbox" class="checkbox checkbox-primary rounded-sm w-5 h-5">
-                  </label>
-                </div>
-                <label for="early" class="text-gray">日勤</label>
-              </div>
-              <div class="flex items-center mb-2">
-                <div class="form-control">
-                  <label class="label">
-                    <input type="checkbox" class="checkbox checkbox-primary rounded-sm w-5 h-5">
-                  </label>
-                </div>
-                <label for="early" class="text-gray">遅番</label>
-              </div>
-              <div class="flex items-center mb-2">
-                <div class="form-control">
-                  <label class="label">
-                    <input type="checkbox" class="checkbox checkbox-primary rounded-sm w-5 h-5">
-                  </label>
-                </div>
-                <label for="early" class="text-gray">夜勤</label>
-              </div>
-              <button type="submit" class="btn btn-primary w-full mt-8 text-white rounded-sm text-base">スタッフ登録</button>
-            </form>
-          </div>
-        </div>
+        <%= form_with(model: @employee, local: true, class: "space-y-6 pt-4") do |form| %>
+      <div>
+        <%= form.label :name, "名前", class: "block font-medium text-gray" %>
+        <%= form.text_field :name, class: "h-8 input input-primary rounded-sm opacity-50 w-full" %>
       </div>
+      <div>
+        <%= form.label :employee_type, "雇用形態", class: "block font-medium text-gray" %>
+        <%= form.select :employee_type, options_for_select([["選択してください", nil], "正社員", "パート", "派遣"]), {}, class: "select select-sm select-primary rounded-sm opacity-50 w-full" %>
+      </div>
+      <div>
+        <div>
+          <label class="block font-medium text-gray mb-2">勤務可能シフト</label>
+        </div>
+        <div class="flex items-center mb-2">
+          <%= form.check_box :early_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+          <%= form.label :early_shift, "早番", class: "text-gray ml-2" %>
+        </div>
+        <div class="flex items-center mb-2">
+          <%= form.check_box :day_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+          <%= form.label :day_shift, "日勤", class: "text-gray ml-2" %>
+        </div>
+        <div class="flex items-center mb-2">
+          <%= form.check_box :late_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+          <%= form.label :late_shift, "遅番", class: "text-gray ml-2" %>
+        </div>
+        <div class="flex items-center mb-2">
+          <%= form.check_box :night_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+          <%= form.label :night_shift, "夜勤", class: "text-gray ml-2" %>
+        </div>
+        <%= form.submit "スタッフ登録", class: "btn btn-primary w-full mt-8 text-white rounded-sm text-base" %>
+      </div>
+    <% end %>
     </main> 
 </body>
