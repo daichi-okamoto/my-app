@@ -30,7 +30,7 @@ module.exports = {
     },
     height: {
       '128': '32rem',
-      '144': '36rem',
+      '144': '37rem',
     },
   },
   daisyui: {
