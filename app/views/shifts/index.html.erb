@@ -82,17 +82,29 @@
         <table class="table-fixed w-full border-separate border-spacing-0">
           <thead>
             <tr>
-              <th class="p-1 w-40 sticky left-0 z-20 bg-white"></th>
+              <th class="p-1 w-40 sticky left-0 z-20 bg-white border-r border-gray-100"></th>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-1 w-12 text-center sticky top-0 z-10 bg-white"><%= "#{c.month}/#{c.day}" %></td>
+                <td class="border border-gray-100 p-1 w-12 text-gray text-center sticky top-0 z-10 bg-white font-semibold"><%= "#{c.month}/#{c.day}" %></td>
               <% end %>
             </tr>
           </thead>
           <thead>
             <tr>
-              <th class="p-1 sticky left-0 z-20 bg-white"></th>
+              <th class="p-1 sticky left-0 z-20 bg-white border-r border-gray-100"></th>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-1 text-center sticky top-8 z-10 bg-white"><%= @weeks[c.wday] %></td>
+                <% if c.wday == 0 %>
+                  <td class="border border-gray-100 p-1 text-red text-center sticky top-8 z-10 bg-white font-semibold">
+                    <%= @weeks[c.wday] %>
+                  </td>
+                <% elsif c.wday == 6 %>
+                  <td class="border border-gray-100 p-1 text-blue text-center sticky top-8 z-10 bg-white font-semibold">
+                    <%= @weeks[c.wday] %>
+                  </td>
+                <% else %>
+                  <td class="border border-gray-100 text-gray p-1 text-center sticky top-8 z-10 bg-white font-semibold">
+                    <%= @weeks[c.wday] %>
+                  </td>
+                <% end %>
               <% end %>
             </tr>
           </thead>
@@ -107,7 +119,13 @@
           <% @employees.each do |e| %>
           <thead>
             <tr>
-              <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center"><%= e.name %></th>
+              <% if e.employee_type == '正社員' %>
+                <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-blue"><%= e.name %></th>
+              <% elsif e.employee_type == 'パート' %>
+                <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-soft-green"><%= e.name %></th>
+              <% else %>
+                <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-gray"><%= e.name %></th>
+              <% end %>
               <% @calendar.each do |c| %>
                 <td class="border border-gray-100 p-2 text-center"></td>
               <% end %>

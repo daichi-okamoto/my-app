@@ -28,7 +28,7 @@ class EmployeesController < ApplicationController
   def update
     @employee = Employee.find(params[:id])
     if @employee.update(employee_params)
-      redirect_to @employee, success: 'スタッフが更新されました'
+      redirect_to dashboard_index_path, success: 'スタッフが更新されました'
     else
       flash.now[:danger] = 'スタッフの更新に失敗しました'
       render :edit, status: :unprocessable_entity
