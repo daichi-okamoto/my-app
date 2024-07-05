@@ -16,7 +16,7 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
   && apt-get update -qq \
   && apt-get install -y nodejs yarn
 
-  # Install PuLP
+# Install PuLP
 RUN pip3 install pulp
 
 # 作業ディレクトリを指定
@@ -27,6 +27,10 @@ COPY Gemfile Gemfile.lock /my-app/
 
 # bundle installを実行
 RUN bundle install
+
+# npmパッケージをインストール
+COPY package.json yarn.lock /my-app/
+RUN yarn install
 
 # ホストのカレントディレクトリをコンテナにコピー
 COPY . /my-app/

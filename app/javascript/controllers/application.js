@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+import Sortable from "sortablejs"
 
 const application = Application.start()
 

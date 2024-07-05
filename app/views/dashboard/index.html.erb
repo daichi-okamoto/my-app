@@ -99,7 +99,7 @@
                 <th class="border border-b-4 border-gray-100 text-center text-black text-base"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="sortable-table-body" data-controller="sortable">
               <% @employees.each do |employee| %>
                 <tr class="hover:bg-whitesmoke">
                   <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.name %></td>
@@ -142,4 +142,5 @@
           </table>
         </div>
       </div>
+    </main>
   </body>

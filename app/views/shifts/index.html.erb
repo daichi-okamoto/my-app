@@ -77,7 +77,12 @@
       </ul>
     </nav>
     <main class="flex-1 h-full">
+      <div class="flex justify-between">
       <h1 class="mt-4 ml-6 text-2xl text-black"><%= @month %>シフト表</h1>
+      <%= form_with url: create_schedule_path, method: :post, local: true do |form| %>
+        <%= form.submit 'シフト作成', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
+      <% end %>
+    </div>
       <div class="max-w-6xl h-144  mr-4 my-3 mx-6 overflow-y-auto overflow-auto">
         <table class="table-fixed w-full border-separate border-spacing-0">
           <thead>

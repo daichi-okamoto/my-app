@@ -1,4 +1,5 @@
 class Employee < ApplicationRecord
+  default_scope { order(:position) }
   validates :name, presence: true
   validates :employee_type, inclusion: { in: %w[正社員 パート 派遣] }
 
