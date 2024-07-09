@@ -37,7 +37,7 @@
       </div>
     </div>
   </header>
-  <div class="flex flex-1">
+  <div class="flex flex-1 overflow-hidden">
     <!-- Sidebar -->
     <nav class="bg-white shadow-lg w-60 p-4 flex flex-col justify-between">
       <ul>
@@ -76,8 +76,8 @@
         </li>
       </ul>
     </nav>
-    <main class="flex-1 flex items-center justify-center bg-whitesmoke">
-      <div class="bg-white shadow-lg p-6 rounded w-full max-w-md">
+    <main class="flex-1 flex justify-center bg-whitesmoke">
+      <div class="bg-white shadow-lg p-6 rounded w-full max-w-md my-14">
         <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
           <h2 class="text-2xl font-normal text-gray">スタッフ登録</h2>
           <%= link_to "戻る", dashboard_index_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue" %>
@@ -85,7 +85,7 @@
         <%= form_with(model: @employee, local: true, class: "space-y-6 pt-4") do |form| %>
       <div>
         <%= form.label :name, "名前", class: "block font-medium text-gray" %>
-        <%= form.text_field :name, class: "h-8 input input-primary rounded-sm opacity-50 w-full" %>
+        <%= form.text_field :name, class: "input input-sm input-primary rounded-sm opacity-50 w-full" %>
       </div>
       <div>
         <%= form.label :employee_type, "雇用形態", class: "block font-medium text-gray" %>
@@ -96,23 +96,30 @@
           <label class="block font-medium text-gray mb-2">勤務可能シフト</label>
         </div>
         <div class="flex items-center mb-2">
-          <%= form.check_box :early_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
-          <%= form.label :early_shift, "早番", class: "text-gray ml-2" %>
+          <label class="text-gray flex items-center">
+            <%= form.check_box :early_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+            <span class="ml-2">早番</span>
+          </label>
         </div>
         <div class="flex items-center mb-2">
-          <%= form.check_box :day_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
-          <%= form.label :day_shift, "日勤", class: "text-gray ml-2" %>
+          <label class="text-gray flex items-center">
+            <%= form.check_box :day_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+            <span class="ml-2">日勤</span>
+          </label>
         </div>
         <div class="flex items-center mb-2">
-          <%= form.check_box :late_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
-          <%= form.label :late_shift, "遅番", class: "text-gray ml-2" %>
+          <label class="text-gray flex items-center">
+            <%= form.check_box :late_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+            <span class="ml-2">遅番</span>
+          </label>
         </div>
         <div class="flex items-center mb-2">
-          <%= form.check_box :night_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
-          <%= form.label :night_shift, "夜勤", class: "text-gray ml-2" %>
+          <label class="text-gray flex items-center">
+            <%= form.check_box :night_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
+            <span class="ml-2">夜勤</span>
+          </label>
         </div>
         <%= form.submit "スタッフ登録", class: "btn btn-primary w-full mt-8 text-white rounded-sm text-base" %>
-      </div>
     <% end %>
     </main> 
 </body>

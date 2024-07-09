@@ -99,11 +99,17 @@
                 <th class="border border-b-4 border-gray-100 text-center text-black text-base"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="sortable-table-body" data-controller="sortable">
               <% @employees.each do |employee| %>
                 <tr class="hover:bg-whitesmoke">
-                  <td class="border border-gray-100 text-center text-gray text-base"><%= employee.name %></td>
-                  <td class="border border-gray-100 text-center text-gray text-base"><%= employee.employee_type %></td>
+                  <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.name %></td>
+                  <% if employee.employee_type == '正社員' %>
+                    <td class="border border-gray-100 text-center text-blue text-base font-semibold"><%= employee.employee_type %></td>
+                  <% elsif employee.employee_type == 'パート' %>
+                    <td class="border border-gray-100 text-center text-soft-green text-base font-semibold"><%= employee.employee_type %></td>
+                  <% else %>
+                    <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.employee_type %></td>
+                  <% end %>
                   <td class="border border-gray-100 text-center text-gray text-base">
                     <div class="flex justify-center border-b-0">
                       <% if employee.early_shift %>
@@ -136,4 +142,5 @@
           </table>
         </div>
       </div>
+    </main>
   </body>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_23_123355) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_08_232315) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,7 +25,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_23_123355) do
     t.date "day_off_requests", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["user_id"], name: "index_employees_on_user_id"
+  end
+
+  create_table "shifts", force: :cascade do |t|
+    t.date "date"
+    t.string "shift_type"
+    t.bigint "employee_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_shifts_on_date"
+    t.index ["employee_id", "date"], name: "index_shifts_on_employee_id_and_date", unique: true
+    t.index ["employee_id"], name: "index_shifts_on_employee_id"
+    t.index ["user_id"], name: "index_shifts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -38,4 +52,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_23_123355) do
   end
 
   add_foreign_key "employees", "users"
+  add_foreign_key "shifts", "employees"
+  add_foreign_key "shifts", "users"
 end

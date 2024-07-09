@@ -1,8 +1,10 @@
 class Employee < ApplicationRecord
+  default_scope { order(:position) }
   validates :name, presence: true
   validates :employee_type, inclusion: { in: %w[正社員 パート 派遣] }
 
   belongs_to :user
+  has_many :shifts
 
   validate :at_least_one_shift_selected
 
