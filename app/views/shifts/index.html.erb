@@ -76,20 +76,37 @@
         </li>
       </ul>
     </nav>
-    <main class="flex-1 h-full">
+    <main class="flex-1">
+      <%= render 'layouts/flash_messages' %>
       <div class="flex justify-between">
-      <h1 class="mt-4 ml-6 text-2xl text-black"><%= @month %>シフト表</h1>
-      <%= form_with url: create_schedule_path, method: :post, local: true do |form| %>
-        <%= form.submit 'シフト作成', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
-      <% end %>
-    </div>
+        <div class="flex items-center">
+          <%= link_to shifts_path(year: @start_date.prev_month.year, month: @start_date.prev_month.month), class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:border-blue ml-6 mt-4 p-0 group" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="group-hover:text-white">
+              <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/>
+            </svg>
+          <% end %>
+          <h1 class="mt-4 ml-2 text-xl text-gray"><%= @shift_calendar %></h1>
+          <%= link_to shifts_path(year: @start_date.next_month.year, month: @start_date.next_month.month), class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:border-blue ml-2  mt-4 p-0 group" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="group-hover:text-white">
+              <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
+            </svg>
+          <% end %>
+        </div>
+        <%= form_with url: create_schedule_path, method: :post, local: true do |form| %>
+          <%= form.hidden_field :year, value: @year %>
+          <%= form.hidden_field :month, value: @month %>
+          <%= form.submit 'シフト作成', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
+        <% end %>
+      </div>
       <div class="max-w-6xl h-144  mr-4 my-3 mx-6 overflow-y-auto overflow-auto">
         <table class="table-fixed w-full border-separate border-spacing-0">
           <thead>
             <tr>
               <th class="p-1 w-40 sticky left-0 z-20 bg-white border-r border-gray-100"></th>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-1 w-12 text-gray text-center sticky top-0 z-10 bg-white font-semibold"><%= "#{c.month}/#{c.day}" %></td>
+                <td class="border border-gray-100 p-1 w-12 text-gray text-center sticky top-0 z-10 bg-white font-semibold">
+                  <%= "#{c.month}/#{c.day}" %>
+                </td>
               <% end %>
             </tr>
           </thead>
@@ -132,13 +149,33 @@
                 <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-gray"><%= e.name %></th>
               <% end %>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-2 text-center"></td>
+                <td class="border border-gray-100 p-2 text-center">
+                  <% if @shifts[e.id] %>
+                    <% shift = @shifts[e.id].find { |s| s.date == c } %>
+                    <% if shift %>
+                      <% case shift.shift_type %>
+                      <% when "早番" %>
+                        H
+                      <% when "日勤" %>
+                        &nbsp; <!-- 空白にする -->
+                      <% when "遅番" %>
+                        O
+                      <% when "夜勤", "夜勤明け" %>
+                        Y
+                      <% when "休み" %>
+                        ⚫️
+                      <% else %>
+                        <%= shift.shift_type %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </td>
               <% end %>
             </tr>
           </thead>
           <% end %>
         </table>
       </div>
-    </main>    
+    </main>
   </div>
 </body>

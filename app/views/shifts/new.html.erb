@@ -147,9 +147,16 @@
                 <% else %>
                   <%= shift %>
                 <% end %>
+                <!-- <select class="select-shift">
+                  <option value="H" <%= "selected" if shift == "早番" %>>早番</option>
+                  <option value="D" <%= "selected" if shift == "日勤" %>>日勤</option>
+                  <option value="O" <%= "selected" if shift == "遅番" %>>遅番</option>
+                  <option value="Y" <%= "selected" if shift == "夜勤" || shift == "夜勤明け" %>>夜勤</option>
+                  <option value="R" <%= "selected" if shift == "休み" %>>休み</option>
+                </select> -->
               <% end %>
             </td>
-          <% end %>
+          <% end %> 
         </tr>
       </thead>
       <% end %>
@@ -161,3 +168,54 @@
 </main>
 </div>
 </body>
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const table = document.getElementById("shift-table");
+    const selectBox = document.getElementById("shift-select");
+  
+    table.addEventListener("click", function(event) {
+      if (event.target.tagName === "TD") {
+        const cell = event.target;
+        const rect = cell.getBoundingClientRect();
+  
+        selectBox.style.top = `${rect.top + window.scrollY}px`;
+        selectBox.style.left = `${rect.left + window.scrollX}px`;
+        selectBox.style.display = "block";
+        selectBox.value = "";  // 既存のシフト値を初期化
+        selectBox.focus();
+  
+        selectBox.onchange = function() {
+          const shiftValue = selectBox.value;
+          let displayValue = "";
+  
+          switch (shiftValue) {
+            case "H":
+              displayValue = "H";
+              break;
+            case "D":
+              displayValue = "";  // 日勤は空白
+              break;
+            case "O":
+              displayValue = "O";
+              break;
+            case "Y":
+              displayValue = "Y";
+              break;
+            case "R":
+              displayValue = "⚫️";
+              break;
+          }
+  
+          cell.innerHTML = displayValue;
+          selectBox.style.display = "none";
+        };
+      }
+    });
+  
+    document.addEventListener("click", function(event) {
+      if (event.target !== selectBox) {
+        selectBox.style.display = "none";
+      }
+    });
+  });
+  </script> -->

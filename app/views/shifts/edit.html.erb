@@ -1,0 +1,233 @@
+<body class="flex flex-col h-screen">
+  <header class="shadow-sm border-b border-gray border-opacity-30">
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center font-mono text-black" do %>
+        <span class="material-symbols-outlined">
+          <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
+        </span>
+          Care Shift
+        <% end %>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal">
+          <li class="">
+            <div class="w-16">
+              <img src="/images/bell.svg" alt="">
+            </div>
+          </li>
+          <li class="mr-2">
+            <div class="flex-none p-0">
+            <div class="dropdown dropdown-end">
+              <div tabindex="0" role="button" class="btn btn-ghost">
+                <div class="w-11 rounded-full hover:bg-blue hover:bg-opacity-30">
+                  <img alt="" src="/images/acount.svg" class="">
+                </div>
+              </div>
+              <div tabindex="0" class="z-[1] card card-compact dropdown-content w-44 bg-whitesmoke shadow rounded-sm">
+                  <div class="card-body">
+                    <%= link_to logout_path, class:"btn btn-ghost btn-sm text-black text-sm hover:text-soft-blue hover:bg-purple hover:bg-opacity-10 rounded-sm", data: { turbo_method: :delete } do %>
+                      ログアウト
+                    <% end %>
+                  </div>
+                </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <nav class="bg-white shadow-lg w-60 p-4 flex flex-col justify-between h-screen">
+      <ul>
+        <li class="mb-2">
+          <%= link_to dashboard_index_path, class:"flex items-center text-sidebar bg-gray-100 p-2 rounded" do %>
+            <img src="/images/person.svg" alt="person-icon" class="mr-2 w-6 h-6">
+            スタッフ管理
+          <% end %>
+        </li>
+        <li class="mb-2">
+          <%= link_to shifts_path, class: "flex items-center text-sidebar hover:bg-gray-100 p-2 rounded" do %>
+            <img src="/images/check-calendar.svg" alt="" class="mr-2 w-6 h-6">
+            シフト管理
+          <% end %>
+        </li>
+      </ul>
+      <ul>
+        <div class="border-t pb-4 border-gray border-opacity-30"></div>
+        <li class="mb-2">
+          <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+            <img src="/images/help.svg" alt="" class="mr-2 w-6 h-6">
+            お問い合わせ
+          </a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+            <img src="/images/service.svg" alt="" class="mr-2 w-6 h-6">
+            利用規約
+          </a>
+        </li>
+        <li class="mb-2">
+          <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
+            <img src="/images/privacy.svg" alt="" class="mr-2 w-6 h-6">
+            プライバシーポリシー
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <main class="flex-1">
+      <% if @employees.present? %>
+      <%= form_with url: shifts_path, method: :post, local: true do %>
+      <% @employees.each do |e| %>
+        <% @calendar.each_with_index do |c, index| %>
+          <% if @schedule_output[e.name] %>
+            <% shift = @schedule_output[e.name][index] %>
+            <input type="hidden" name="shifts[][date]" value="<%= c %>">
+            <input type="hidden" name="shifts[][shift_type]" value="<%= shift %>">
+            <input type="hidden" name="shifts[][employee_id]" value="<%= e.id %>">
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= submit_tag 'シフトを保存', class: 'btn btn-primary' %>
+    <% end %>
+    <div class="max-w-6xl h-144 mr-4 my-3 mx-6 overflow-y-auto overflow-auto">
+      <table class="table-fixed w-full border-separate border-spacing-0">
+        <thead>
+          <tr>
+            <th class="p-1 w-40 sticky left-0 z-20 bg-white border-r border-gray-100"></th>
+            <% @calendar.each do |c| %>
+              <td class="border border-gray-100 p-1 w-12 text-gray text-center sticky top-0 z-10 bg-white font-semibold">
+                <%= "#{c.month}/#{c.day}" %>
+              </td>
+            <% end %>
+          </tr>
+        </thead>
+        <thead>
+          <tr>
+            <th class="p-1 sticky left-0 z-20 bg-white border-r border-gray-100"></th>
+            <% @calendar.each do |c| %>
+              <% if c.wday == 0 %>
+                <td class="border border-gray-100 p-1 text-red text-center sticky top-8 z-10 bg-white font-semibold">
+                  <%= @weeks[c.wday] %>
+                </td>
+              <% elsif c.wday == 6 %>
+                <td class="border border-gray-100 p-1 text-blue text-center sticky top-8 z-10 bg-white font-semibold">
+                  <%= @weeks[c.wday] %>
+                </td>
+              <% else %>
+                <td class="border border-gray-100 text-gray p-1 text-center sticky top-8 z-10 bg-white font-semibold">
+                  <%= @weeks[c.wday] %>
+                </td>
+              <% end %>
+            <% end %>
+          </tr>
+        </thead>
+        <thead>
+          <tr>
+            <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
+            <% @calendar.each do |c| %>
+              <td class="border border-gray-100 p-2"></td>
+            <% end %>
+          </tr>
+        </thead>
+        <% @employees.each do |e| %>
+        <thead>
+          <tr>
+            <% if e.employee_type == '正社員' %>
+              <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-blue"><%= e.name %></th>
+            <% elsif e.employee_type == 'パート' %>
+              <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-soft-green"><%= e.name %></th>
+            <% else %>
+              <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-gray"><%= e.name %></th>
+            <% end %>
+            <% @calendar.each_with_index do |c, index| %>
+              <td class="border border-gray-100 p-2 text-center">
+                <% if @schedule_output[e.name] %>
+                  <% shift = @schedule_output[e.name][index] %>
+                  <% case shift %>
+                  <% when "早番" %>
+                    H
+                  <% when "日勤" %>
+                    &nbsp; <!-- 空白にする -->
+                  <% when "遅番" %>
+                    O
+                  <% when "夜勤", "夜勤明け" %>
+                    Y
+                  <% when "休み" %>
+                    ⚫️
+                  <% else %>
+                    <%= shift %>
+                  <% end %>
+                  <!-- <select class="select-shift">
+                    <option value="H" <%= "selected" if shift == "早番" %>>早番</option>
+                    <option value="D" <%= "selected" if shift == "日勤" %>>日勤</option>
+                    <option value="O" <%= "selected" if shift == "遅番" %>>遅番</option>
+                    <option value="Y" <%= "selected" if shift == "夜勤" || shift == "夜勤明け" %>>夜勤</option>
+                    <option value="R" <%= "selected" if shift == "休み" %>>休み</option>
+                  </select> -->
+                <% end %>
+              </td>
+            <% end %> 
+          </tr>
+        </thead>
+        <% end %>
+      </table>
+    </div>
+  <% else %>
+    <p>シフトが作成できませんでした</p>
+  <% end %>
+  </main>
+  </div>
+  </body>
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const table = document.getElementById("shift-table");
+      const selectBox = document.getElementById("shift-select");
+    
+      table.addEventListener("click", function(event) {
+        if (event.target.tagName === "TD") {
+          const cell = event.target;
+          const rect = cell.getBoundingClientRect();
+    
+          selectBox.style.top = `${rect.top + window.scrollY}px`;
+          selectBox.style.left = `${rect.left + window.scrollX}px`;
+          selectBox.style.display = "block";
+          selectBox.value = "";  // 既存のシフト値を初期化
+          selectBox.focus();
+    
+          selectBox.onchange = function() {
+            const shiftValue = selectBox.value;
+            let displayValue = "";
+    
+            switch (shiftValue) {
+              case "H":
+                displayValue = "H";
+                break;
+              case "D":
+                displayValue = "";  // 日勤は空白
+                break;
+              case "O":
+                displayValue = "O";
+                break;
+              case "Y":
+                displayValue = "Y";
+                break;
+              case "R":
+                displayValue = "⚫️";
+                break;
+            }
+    
+            cell.innerHTML = displayValue;
+            selectBox.style.display = "none";
+          };
+        }
+      });
+    
+      document.addEventListener("click", function(event) {
+        if (event.target !== selectBox) {
+          selectBox.style.display = "none";
+        }
+      });
+    });
+    </script> -->
