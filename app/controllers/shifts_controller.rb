@@ -3,16 +3,22 @@ class ShiftsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create_schedule]
   
   def index
-    month(params[:year], params[:month])
+    Rails.logger.debug "Calling set_month_data in ShiftsController#index"
+    set_month_data(params[:year], params[:month])
     @employees = Employee.all
     @shifts = Shift.all.group_by(&:employee_id)
   end
 
   def new
+    set_month_data(params[:year], params[:month])
+    @employees = Employee.all
+    @shift_requests = ShiftRequest.where("extract(year from date) = ? AND extract(month from date) = ?", @year, @month).group_by(&:employee_id)
+    set_month_data(@year, @month)
   end
 
   def edit
-    month(params[:year], params[:month])
+    Rails.logger.debug "Calling set_month_data in ShiftsController#edit"
+    set_month_data(params[:year], params[:month])
     @schedule_output = @schedule_output || {}
   end
 
@@ -21,20 +27,18 @@ class ShiftsController < ApplicationController
 
   def create
     params[:shifts].each do |shift_params|
-      shift = Shift.new(shift_params)
+      shift = Shift.new(shift_params.permit(:date, :shift_type, :employee_id))
       shift.user = current_user
       unless shift.save
         flash[:error] = 'シフトの保存に失敗しました'
-        redirect_to edit_shift_path and return
       end
     end
-
-    flash[:success] = 'シフトが保存されました'
     redirect_to shifts_path
   end
 
   def create_schedule
-    month(params[:year], params[:month])
+    Rails.logger.debug "Calling set_month_data in ShiftsController#create_schedule"
+    set_month_data(params[:year], params[:month])
     @employees = Employee.all
 
     employees = Employee.all
@@ -83,22 +87,6 @@ class ShiftsController < ApplicationController
   end
 
   private
-
-  def month(year = nil, month = nil)
-    @year = year ? year.to_i : Date.current.year
-    @month = month ? month.to_i : Date.current.month
-
-    date_now = Date.new(@year, @month)
-    @weeks = ["日", "月", "火", "水", "木", "金", "土"]
-
-    month_names = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-    @month_name = month_names[date_now.month - 1]
-
-    @start_date = date_now.beginning_of_month
-    @end_date = date_now.end_of_month
-    @calendar = (@start_date..@end_date).to_a
-    @shift_calendar = "#{@start_date.year}年#{@start_date.month}月1日〜#{@end_date.month}月#{@end_date.day}日"
-  end
 
   def shift_params
     params.require(:shift).permit(:date, :shift_type, :employee_id)

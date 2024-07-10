@@ -92,10 +92,10 @@
             </svg>
           <% end %>
         </div>
-        <%= form_with url: create_schedule_path, method: :post, local: true do |form| %>
+        <%= form_with url: new_shift_request_path, method: :get, local: true do |form| %>
           <%= form.hidden_field :year, value: @year %>
           <%= form.hidden_field :month, value: @month %>
-          <%= form.submit 'シフト作成', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
+          <%= form.submit '勤務希望を入力する', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
         <% end %>
       </div>
       <div class="max-w-6xl h-144  mr-4 my-3 mx-6 overflow-y-auto overflow-auto">

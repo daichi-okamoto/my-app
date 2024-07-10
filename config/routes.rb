@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[new create] 
   resources :employees
   resources :shifts, only: %i[index new create edit update]
+  resources :shift_requests, only: %i[new create destroy]
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee: one
+  date: 2024-07-09
+  shift_type: MyString
+
+two:
+  employee: two
+  date: 2024-07-09
+  shift_type: MyString
