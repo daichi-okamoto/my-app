@@ -4,7 +4,7 @@ class Employee < ApplicationRecord
   validates :employee_type, inclusion: { in: %w[正社員 パート 派遣] }
 
   belongs_to :user
-  has_many :shifts
+  has_many :shifts, dependent: :destroy
 
   validate :at_least_one_shift_selected
 

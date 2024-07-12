@@ -92,10 +92,26 @@
             </svg>
           <% end %>
         </div>
-        <%= form_with url: new_shift_request_path, method: :get, local: true do |form| %>
-          <%= form.hidden_field :year, value: @year %>
-          <%= form.hidden_field :month, value: @month %>
-          <%= form.submit '勤務希望を入力する', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
+        <% if @shifts.values.flatten.select { |shift| shift.date.year == @year.to_i && shift.date.month == @month.to_i }.any? %>
+          <div class="flex">
+            <%= link_to 'Excelに出力', '#', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-4" %>
+            <%= link_to '#', class: "mt-4 mr-2 hover:bg-whitesmoke rounded" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#13b5ea">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h389L509-773.33H186.67v586.66h586.66v-324.66L840-578v391.33q0 27-19.83 46.84Q800.33-120 773.33-120H186.67ZM480-480ZM360-360v-170l377-377q10-10 22.33-14.67 12.34-4.66 24.67-4.66 12.67 0 25.04 5 12.38 5 22.63 15l74 75q9.4 9.97 14.53 22.02 5.13 12.05 5.13 24.51 0 12.47-4.83 24.97-4.83 12.5-14.83 22.5L530-360H360Zm499-424.67-74.67-74.66L859-784.67Zm-432.33 358H502l246-246L710-710l-38.33-37.33-245 244.33v76.33ZM710-710l-38.33-37.33L710-710l38 37.33L710-710Z"/>
+              </svg>
+            <% end %>
+            <%= link_to destroy_all_shifts_path(year: @year, month: @month), data: { turbo_method: :delete, turbo_confirm: 'シフトを削除しますか？' }, class: "mr-6 mt-4 hover:bg-whitesmoke rounded" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FF6969">
+              <path d="M261-120q-24.75 0-42.37-17.63Q201-155.25 201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"/>
+            </svg>
+            <% end %>
+          </div>
+        <% else %>
+          <%= form_with url: new_shift_request_path, method: :get, local: true do |form| %>
+            <%= form.hidden_field :year, value: @year %>
+            <%= form.hidden_field :month, value: @month %>
+            <%= form.submit '勤務希望を入力する', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
+          <% end %>
         <% end %>
       </div>
       <div class="max-w-6xl h-144  mr-4 my-3 mx-6 overflow-y-auto overflow-auto">
@@ -134,7 +150,7 @@
             <tr>
               <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-2"></td>
+                <td class="border border-gray-100 p-2 vertical-textarea"></td>
               <% end %>
             </tr>
           </thead>
@@ -149,7 +165,7 @@
                 <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-gray"><%= e.name %></th>
               <% end %>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-2 text-center">
+                <td class="border border-gray-100 p-2 text-center text-black">
                   <% if @shifts[e.id] %>
                     <% shift = @shifts[e.id].find { |s| s.date == c } %>
                     <% if shift %>

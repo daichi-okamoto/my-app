@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.vertical-textarea {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  height: 180px; /* 適切な高さを設定 */
+  width: 30px; /* 適切な幅を設定 */
+}

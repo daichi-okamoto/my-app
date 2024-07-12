@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_09_062457) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_12_001153) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,13 +29,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_09_062457) do
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
+  create_table "memos", force: :cascade do |t|
+    t.date "date"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "shift_id"
+    t.index ["user_id"], name: "index_memos_on_user_id"
+  end
+
   create_table "shift_requests", force: :cascade do |t|
     t.bigint "employee_id", null: false
     t.date "date"
     t.string "shift_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["employee_id"], name: "index_shift_requests_on_employee_id"
+    t.index ["user_id"], name: "index_shift_requests_on_user_id"
   end
 
   create_table "shifts", force: :cascade do |t|
@@ -61,7 +73,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_09_062457) do
   end
 
   add_foreign_key "employees", "users"
+  add_foreign_key "memos", "users"
   add_foreign_key "shift_requests", "employees"
+  add_foreign_key "shift_requests", "users"
   add_foreign_key "shifts", "employees"
   add_foreign_key "shifts", "users"
 end
