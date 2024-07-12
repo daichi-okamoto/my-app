@@ -32,6 +32,10 @@ module.exports = {
       '128': '32rem',
       '144': '37rem',
     },
+    safelist: [
+      // カスタムクラスをセーフリストに追加
+      'vertical-textarea'
+    ],
   },
   daisyui: {
     themes: [

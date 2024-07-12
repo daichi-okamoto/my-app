@@ -79,19 +79,6 @@
     <main class="flex-1">
       <%= render 'layouts/flash_messages' %>
       <div class="flex justify-between">
-        <div class="flex items-center">
-          <%= link_to shifts_path(year: @start_date.prev_month.year, month: @start_date.prev_month.month), class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:border-blue ml-6 mt-4 p-0 group" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="group-hover:text-white">
-              <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/>
-            </svg>
-          <% end %>
-          <h1 class="mt-4 ml-2 text-xl text-gray"><%= @shift_calendar %></h1>
-          <%= link_to shifts_path(year: @start_date.next_month.year, month: @start_date.next_month.month), class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:border-blue ml-2  mt-4 p-0 group" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="group-hover:text-white">
-              <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
-            </svg>
-          <% end %>
-        </div>
         <%= form_with url: create_schedule_path, method: :post, local: true do |form| %>
           <%= form.hidden_field :year, value: @year %>
           <%= form.hidden_field :month, value: @month %>
@@ -134,7 +121,10 @@
             <tr>
               <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-2"></td>
+              <td class="border border-gray-100 p-2">
+                <% memo = @memos[c] %>
+                <%= memo ? memo.content : '' %>
+              </td>
               <% end %>
             </tr>
           </thead>
@@ -155,6 +145,7 @@
               </td>
               <% end %>
             </tr>
+            </div>
           </thead>
           <% end %>
         </table>

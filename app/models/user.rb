@@ -8,4 +8,6 @@ class User < ApplicationRecord
 
   has_many :shifts
   has_many :employees
+  has_many :shift_requests
+  has_many :memos
 end

@@ -82,10 +82,13 @@
         <div class="flex items-center">
           <h1 class="text-xl font-semibold text-gray ml-6 mt-4">勤務希望を入力してください</h1>
         </div>
-        <%= form_with model: @shift_request, url: shift_requests_path, method: :post, local: true do |form| %>
-        <%= form.hidden_field :year, value: @year %>
-        <%= form.hidden_field :month, value: @month %>
-        <%= form.submit '勤務希望を保存', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6" %>
+        <div class="flex">
+          <%= form_with model: @shift_request, url: shift_requests_path, method: :post, local: true do |form| %>
+          <%= form.hidden_field :year, value: @year %>
+          <%= form.hidden_field :month, value: @month %>
+          <%= form.submit '勤務希望を保存', class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-2" %>
+          <%= link_to "戻る", shifts_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-2 ml-auto mr-6" %>
+        </div>
       </div>
       <div class="max-w-6xl h-144  mr-4 my-3 mx-6 overflow-y-auto overflow-auto">
         <table class="table-fixed w-full border-separate border-spacing-0">
@@ -123,7 +126,9 @@
             <tr>
               <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
               <% @calendar.each do |c| %>
-                <td class="border border-gray-100 p-2"></td>
+                <td class="border border-gray-100 p-2">
+                  <%= form.text_area "memos[#{c}]", class: "vertical-textarea text-black" %>
+                </td> 
               <% end %>
             </tr>
           </thead>
@@ -147,7 +152,7 @@
           </thead>
           <% end %>
         </table>
-        <% end %>
+        <% end %> <!-- form_with の終了タグ -->
       </div>
     </main>
   </div>

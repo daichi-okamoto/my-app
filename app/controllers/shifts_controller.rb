@@ -10,10 +10,15 @@ class ShiftsController < ApplicationController
   end
 
   def new
-    set_month_data(params[:year], params[:month])
-    @employees = Employee.all
-    @shift_requests = ShiftRequest.where("extract(year from date) = ? AND extract(month from date) = ?", @year, @month).group_by(&:employee_id)
+    @year = params[:year]
+    @month = params[:month]
+    
     set_month_data(@year, @month)
+    @employees = Employee.all
+
+    # ここでシフトリクエストを取得します
+    @shift_requests = ShiftRequest.where(date: @start_date..@end_date).group_by(&:employee_id)
+    @memos = current_user.memos.where(date: @start_date..@end_date).index_by(&:date)
   end
 
   def edit
@@ -84,6 +89,16 @@ class ShiftsController < ApplicationController
 
     flash.now[:success] = 'シフトを作成しました'
     render :edit, status: :unprocessable_entity
+  end
+
+  def destroy_all
+    start_date = Date.new(params[:year].to_i, params[:month].to_i, 1)
+    end_date = start_date.end_of_month
+
+    Shift.where(date: start_date..end_date).destroy_all
+    ShiftRequest.where(date: start_date..end_date).destroy_all
+    
+    redirect_to shifts_path(year: params[:year], month: params[:month]), success: 'シフトを削除しました'
   end
 
   private
