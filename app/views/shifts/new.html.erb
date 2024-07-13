@@ -78,7 +78,7 @@
     </nav>
     <main class="flex-1">
       <%= render 'layouts/flash_messages' %>
-      <div class="flex justify-between">
+      <div class="flex justify-end">
         <%= form_with url: create_schedule_path, method: :post, local: true do |form| %>
           <%= form.hidden_field :year, value: @year %>
           <%= form.hidden_field :month, value: @month %>
@@ -121,9 +121,8 @@
             <tr>
               <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
               <% @calendar.each do |c| %>
-              <td class="border border-gray-100 p-2">
-                <% memo = @memos[c] %>
-                <%= memo ? memo.content : '' %>
+              <td class="border border-gray-100 p-2 vertical-textarea">
+                <%= @memos[c]&.content %>
               </td>
               <% end %>
             </tr>

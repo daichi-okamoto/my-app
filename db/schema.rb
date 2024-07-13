@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_12_001153) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_12_070018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,7 +46,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_12_001153) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.bigint "shift_id"
     t.index ["employee_id"], name: "index_shift_requests_on_employee_id"
+    t.index ["shift_id"], name: "index_shift_requests_on_shift_id"
     t.index ["user_id"], name: "index_shift_requests_on_user_id"
   end
 
@@ -75,6 +77,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_12_001153) do
   add_foreign_key "employees", "users"
   add_foreign_key "memos", "users"
   add_foreign_key "shift_requests", "employees"
+  add_foreign_key "shift_requests", "shifts"
   add_foreign_key "shift_requests", "users"
   add_foreign_key "shifts", "employees"
   add_foreign_key "shifts", "users"

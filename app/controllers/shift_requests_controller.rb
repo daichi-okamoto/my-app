@@ -6,9 +6,9 @@ class ShiftRequestsController < ApplicationController
   end
 
   def create
-    Rails.logger.debug "Received params: #{params.inspect}"
-    shift_requests_params = shift_request_params[:shift_requests].to_h
-    memos_params = shift_request_params[:memos].to_h
+    Rails.logger.debug "Full params: #{params.inspect}"
+    shift_requests_params = params[:shift_request][:shift_requests]&.to_unsafe_h || {}
+    memos_params = params[:shift_request][:memos]&.to_unsafe_h || {}
   
     Rails.logger.debug "Shift requests params: #{shift_requests_params.inspect}"
     Rails.logger.debug "Memos params: #{memos_params.inspect}"
@@ -55,7 +55,7 @@ class ShiftRequestsController < ApplicationController
   private
 
   def shift_request_params
-    params.require(:shift_request).permit(:year, :month, shift_requests: {}, memos: {})
+    params.require(:shift_request).permit(:year, :month, memos: {}, shift_requests: {})
   end
 
   def format_shift_type(shift_type)
@@ -70,11 +70,13 @@ class ShiftRequestsController < ApplicationController
   end
 
   def set_common_data
-    Rails.logger.debug "Year: #{params[:year] || params.dig(:shift_request, :year)}, Month: #{params[:month] || params.dig(:shift_request, :month)}"
+    year = params[:year] || params.dig(:shift_request, :year)
+    month = params[:month] || params.dig(:shift_request, :month)
+    set_month_data(year, month)
+     Rails.logger.debug "Year: #{year}, Month: #{month}, Start Date: #{@start_date}, End Date: #{@end_date}"
     @employees = Employee.all
     @shifts = Shift.all.group_by(&:employee_id)
     @shift_requests = ShiftRequest.where(date: @start_date..@end_date)
     @memos = current_user.memos.where(date: @start_date..@end_date).index_by(&:date)
-    set_month_data(params[:year], params[:month])
   end
 end
