@@ -89,7 +89,9 @@
           <% end %>
         <% end %>
       <% end %>
-      <%= submit_tag 'シフトを保存', class: 'btn btn-primary' %>
+      <div class="flex justify-end">
+        <%= submit_tag 'シフトを保存', class: 'btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue px-7 ml-auto mt-4 mr-6' %>
+      </div>
     <% end %>
     <div class="max-w-6xl h-144 mr-4 my-3 mx-6 overflow-y-auto overflow-auto">
       <table class="table-fixed w-full border-separate border-spacing-0">
@@ -127,7 +129,7 @@
           <tr>
             <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
             <% @calendar.each do |c| %>
-              <td class="border border-gray-100 p-2"></td>
+              <td class="border border-gray-100 p-2 vertical-textarea"></td>
             <% end %>
           </tr>
         </thead>

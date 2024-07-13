@@ -18,7 +18,7 @@ class ShiftsController < ApplicationController
 
     # ここでシフトリクエストを取得します
     @shift_requests = ShiftRequest.where(date: @start_date..@end_date).group_by(&:employee_id)
-    @memos = current_user.memos.where(date: @start_date..@end_date).index_by(&:date)
+    @memos = Memo.where(date: @start_date..@end_date).index_by(&:date)
   end
 
   def edit
@@ -94,11 +94,21 @@ class ShiftsController < ApplicationController
   def destroy_all
     start_date = Date.new(params[:year].to_i, params[:month].to_i, 1)
     end_date = start_date.end_of_month
-
-    Shift.where(date: start_date..end_date).destroy_all
-    ShiftRequest.where(date: start_date..end_date).destroy_all
+  
+    ActiveRecord::Base.transaction do
+      # シフトを削除
+      Shift.where(date: start_date..end_date).destroy_all
+      
+      # シフトリクエストを削除
+      ShiftRequest.where(date: start_date..end_date).destroy_all
+      
+      # メモを削除
+      Memo.where(date: start_date..end_date).destroy_all
+    end
     
     redirect_to shifts_path(year: params[:year], month: params[:month]), success: 'シフトを削除しました'
+  rescue ActiveRecord::RecordNotDestroyed => e
+    redirect_to shifts_path(year: params[:year], month: params[:month]), alert: "削除に失敗しました: #{e.message}"
   end
 
   private
