@@ -127,7 +127,7 @@
                 <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
                 <% @calendar.each do |c| %>
                   <td class="border border-gray-100 p-2">
-                    <%= form.text_area "memos[#{c}]", class: "vertical-textarea text-black" %>
+                    <%= form.text_area "memos[#{c}]", class: "vertical-textarea text-gray text-sm" %>
                   </td>
                 <% end %>
               </tr>

@@ -7,6 +7,8 @@ class ShiftsController < ApplicationController
     set_month_data(params[:year], params[:month])
     @employees = Employee.all
     @shifts = Shift.all.group_by(&:employee_id)
+    @memos = Memo.where(date: @start_date..@end_date).index_by(&:date)
+    @shift_counts = sum_shift_counts(@employees, @shifts, @calendar)
   end
 
   def new
@@ -22,32 +24,70 @@ class ShiftsController < ApplicationController
   end
 
   def edit
-    Rails.logger.debug "Calling set_month_data in ShiftsController#edit"
     set_month_data(params[:year], params[:month])
     @schedule_output = @schedule_output || {}
   end
 
-  def update
-  end
+  def update_schedule
+    set_month_data(params[:year], params[:month])
+    @employees = Employee.all
+    @schedule_output = @schedule_output || {}
+    @memos = Memo.where(date: @start_date..@end_date).index_by(&:date)
+    @shifts = Shift.where(date: @start_date..@end_date).group_by(&:employee_id)
+    
+    ActiveRecord::Base.transaction do
+      params[:shifts].each do |employee_id, shifts|
+        shifts.each do |date, shift_type|
+          formatted_shift_type = format_shift_type(shift_type)
+          shift = Shift.find_or_initialize_by(employee_id: employee_id, date: date)
+          shift.shift_type = formatted_shift_type
+          unless shift.save
+            flash[:danger] = 'シフトの保存に失敗しました'
+            raise ActiveRecord::Rollback
+          end
+        end
+      end
+    
+      params[:memos].each do |date, content|
+        memo = Memo.find_by(date: date)
+        if content.blank?
+          memo&.destroy
+        else
+          memo ||= Memo.new(date: date, user: current_user)
+          memo.content = content
+          unless memo.save
+            flash[:danger] = 'メモの保存に失敗しました'
+            raise ActiveRecord::Rollback
+          end
+        end
+      end
+    end
+    
+    flash[:success] = 'シフトを変更しました'
+    redirect_to shifts_path(year: params[:year], month: params[:month])
+  end  
 
   def create
     params[:shifts].each do |shift_params|
       shift = Shift.new(shift_params.permit(:date, :shift_type, :employee_id))
       shift.user = current_user
       unless shift.save
-        flash[:error] = 'シフトの保存に失敗しました'
+        flash[:danger] = 'シフトの保存に失敗しました'
       end
     end
+    flash[:success] = 'シフトを保存しました'
     redirect_to shifts_path
   end
 
   def create_schedule
     Rails.logger.debug "Calling set_month_data in ShiftsController#create_schedule"
-    set_month_data(params[:year], params[:month])
+    set_month_data(params[:year], params[:month]) 
     @employees = Employee.all
+    @memos = Memo.where(date: @start_date..@end_date).index_by(&:date)
 
     employees = Employee.all
     dates = (@start_date..@end_date).to_a
+    shift_requests = ShiftRequest.where(date: @start_date..@end_date).group_by(&:employee_id)
 
     data = {
       employees: employees.map do |e|
@@ -59,7 +99,8 @@ class ShiftsController < ApplicationController
         {
           id: e.id,
           name: e.name,
-          employee_type: e.employee_type
+          employee_type: e.employee_type,
+          shift_requests: shift_requests[e.id]&.map { |sr| { date: sr.date.to_s, shift_type: sr.shift_type } } || []
         }.merge(shifts)
       end,
       dates: dates.map(&:to_s)
@@ -78,17 +119,25 @@ class ShiftsController < ApplicationController
 
     begin
       parsed_output = JSON.parse(output)
-      @schedule_output = parsed_output.empty? ? nil : parsed_output
+      @schedule_output = parsed_output.empty? ? {}: parsed_output
     rescue JSON::ParserError => e
       Rails.logger.error "JSON Parse Error: #{e.message}"
       Rails.logger.error "Failed output: #{output}"
-      @schedule_output = nil
+      @schedule_output = {}
     end
 
     Rails.logger.info "Parsed schedule output: #{@schedule_output.inspect}"
 
     flash.now[:success] = 'シフトを作成しました'
     render :edit, status: :unprocessable_entity
+  end
+
+  def edit_schedule
+    set_month_data(params[:year], params[:month])
+    @employees = Employee.all
+    @memos = Memo.where(date: @start_date..@end_date).index_by(&:date)
+    @shifts = Shift.where(date: @start_date..@end_date).group_by(&:employee_id)
+    @shifts.default = [] 
   end
 
   def destroy_all
@@ -111,9 +160,58 @@ class ShiftsController < ApplicationController
     redirect_to shifts_path(year: params[:year], month: params[:month]), alert: "削除に失敗しました: #{e.message}"
   end
 
+  def export_excel
+    set_month_data(params[:year], params[:month])
+    @employees = Employee.all
+    @shifts = Shift.where(date: @start_date..@end_date).group_by(&:employee_id)
+    @memos = Memo.where(date: @start_date..@end_date).index_by(&:date)
+  
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=shifts_#{params[:year]}_#{params[:month]}.xlsx"
+      }
+    end
+  end
+
   private
 
   def shift_params
     params.require(:shift).permit(:date, :shift_type, :employee_id)
+  end
+
+  def sum_shift_counts(employees, shifts, calendar)
+    counts = {}
+    employees.each do |employee|
+      counts[employee.id] = { early: 0, day: 0, late: 0, night: 0, off: 0 }
+      calendar.each do |date|
+        next unless shifts[employee.id]
+        shift = shifts[employee.id].find { |s| s.date == date }
+        next unless shift
+        case shift.shift_type
+        when "早番"
+          counts[employee.id][:early] += 1
+        when "日勤"
+          counts[employee.id][:day] += 1
+        when "遅番"
+          counts[employee.id][:late] += 1
+        when "夜勤"
+          counts[employee.id][:night] += 1
+        when "休み"
+          counts[employee.id][:off] += 1
+        end
+      end
+    end
+    counts
+  end
+
+  def format_shift_type(shift_type)
+    case shift_type
+    when 'H' then '早番'
+    when 'N' then '日勤'
+    when 'O' then '遅番'
+    when 'Y' then '夜勤'
+    when '⚫️' then '休み'
+    else shift_type
+    end
   end
 end

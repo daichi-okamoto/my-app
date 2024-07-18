@@ -1,0 +1,61 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Shifts") do |sheet|
+  # セルの幅を設定
+  sheet.column_widths 7, *([4] * @calendar.size), 3, 3, 3, 3, 3
+
+  # セルに格子と中央揃えを入れるスタイル
+  border_style = sheet.styles.add_style(
+    border: { style: :thin, color: "000000", edges: [:left, :right, :top, :bottom] },
+    alignment: { horizontal: :center, vertical: :center }
+  )
+
+  # ヘッダー行（日付と曜日）
+  dates_row = ["日付"] + @calendar.map { |c| "#{c.month}/#{c.day}" } + ["早番", "日勤", "遅番", "夜勤", "休み"]
+  days_row = ["曜日"] + @calendar.map { |c| %w(日 月 火 水 木 金 土)[c.wday] } + ["", "", "", "", ""]
+  
+  sheet.add_row dates_row, style: border_style
+  sheet.add_row days_row, style: border_style
+
+  # ヘッダー行の高さを設定
+  sheet.rows[0].height = 30
+  sheet.rows[1].height = 30
+
+  # 委員会・予定・行事の行
+  memos_row = ["委員会・予定・行事"] + @calendar.map { |c| @memos[c]&.content&.gsub("\n", "\n") } + ["", "", "", "", ""]
+  memos_style = sheet.styles.add_style(
+    alignment: { text_rotation: 90, vertical: :center, horizontal: :center, wrap_text: true },
+    border: { style: :thin, color: "000000", edges: [:left, :right, :top, :bottom] }
+  )
+  sheet.add_row memos_row, style: memos_style
+
+  # 委員会・予定・行事の行の高さを設定
+  sheet.rows[2].height = 150
+
+  # 従業員ごとのシフト
+  @employees.each_with_index do |e, index|
+    shifts_row = @calendar.map do |c|
+      shift = @shifts[e.id]&.find { |s| s.date == c }
+      case shift&.shift_type
+      when "早番" then "H"
+      when "日勤" then ""
+      when "遅番" then "O"
+      when "夜勤", "夜勤明け" then "Y"
+      when "休み" then "⚫️"
+      else shift&.shift_type || ""
+      end
+    end
+
+    # 各シフトの回数をカウント
+    early_count = shifts_row.count("H")
+    day_count = shifts_row.count("")
+    late_count = shifts_row.count("O")
+    night_count = shifts_row.count("Y")
+    off_count = shifts_row.count("⚫️")
+
+    sheet.add_row [e.name] + shifts_row + [early_count, day_count, late_count, night_count, off_count], style: border_style
+
+    # 従業員ごとのシフト行の高さを設定
+    sheet.rows[index + 3].height = 30   # 0から始まるため、+3で正しい行を設定
+  end
+end

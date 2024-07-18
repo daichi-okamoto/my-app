@@ -1,0 +1,155 @@
+{
+  "employees": [
+    {
+      "name": "吉川",
+      "employee_type": "正社員",
+      "early_shift": true,
+      "day_shift": true,
+      "late_shift": true,
+      "night_shift": true,
+      "shift_requests": {
+        "2024-07-01": "早番",
+        "2024-07-08": "遅番",
+        "2024-07-17": "夜勤",
+        "2024-07-27": "休み"
+      }
+    },
+    {
+      "name": "市沢",
+      "employee_type": "正社員",
+      "early_shift": true,
+      "day_shift": true,
+      "late_shift": true,
+      "night_shift": true,
+      "shift_requests": {
+        "2024-07-03": "夜勤",
+        "2024-07-11": "休み",
+        "2024-07-19": "休み",
+        "2024-07-30": "休み"
+      }
+    },
+    {
+      "name": "寺澤",
+      "employee_type": "正社員",
+      "early_shift": true,
+      "day_shift": true,
+      "late_shift": true,
+      "night_shift": true,
+      "shift_requests": {
+        "2024-07-01": "休み",
+        "2024-07-07": "休み",
+        "2024-07-14": "遅番",
+        "2024-07-15": "休み"
+      }
+    },
+    {
+      "name": "岡本",
+      "employee_type": "正社員",
+      "early_shift": true,
+      "day_shift": true,
+      "late_shift": true,
+      "night_shift": true,
+      "shift_requests": {
+        "2024-07-04": "休み",
+        "2024-07-13": "早番",
+        "2024-07-26": "休み",
+        "2024-07-27": "休み"
+      }
+    },
+    {
+      "name": "高原",
+      "employee_type": "正社員",
+      "early_shift": true,
+      "day_shift": true,
+      "late_shift": true,
+      "night_shift": true,
+      "shift_requests": {
+        "2024-07-11": "日勤",
+        "2024-07-13": "休み",
+        "2024-07-25": "休み",
+        "2024-07-31": "休み"
+      }
+    },
+    {
+      "name": "北原",
+      "employee_type": "正社員",
+      "early_shift": true,
+      "day_shift": true,
+      "late_shift": true,
+      "night_shift": true,
+      "shift_requests": {
+        "2024-07-10": "休み",
+        "2024-07-11": "休み",
+        "2024-07-21": "夜勤"
+      }
+    },
+    {
+      "name": "山宮",
+      "employee_type": "正社員",
+      "early_shift": false,
+      "day_shift": true,
+      "late_shift": false,
+      "night_shift": false,
+      "shift_requests": {
+        "2024-07-07": "休み",
+        "2024-07-21": "休み"
+      }
+    },
+    {
+      "name": "湯沢",
+      "employee_type": "パート",
+      "early_shift": false,
+      "day_shift": true,
+      "late_shift": false,
+      "night_shift": false,
+      "shift_requests": {
+        "2024-07-01": "休み",
+        "2024-07-02": "休み",
+        "2024-07-08": "休み",
+        "2024-07-09": "休み",
+        "2024-07-15": "休み",
+        "2024-07-16": "休み",
+        "2024-07-22": "休み",
+        "2024-07-23": "休み",
+        "2024-07-29": "休み",
+        "2024-07-30": "休み"
+      }
+    },
+    {
+      "name": "荒牧",
+      "employee_type": "パート",
+      "early_shift": false,
+      "day_shift": true,
+      "late_shift": false,
+      "night_shift": false,
+      "shift_requests": {
+        "2024-07-01": "休み",
+        "2024-07-09": "休み",
+        "2024-07-16": "休み",
+        "2024-07-22": "休み",
+        "2024-07-29": "休み"
+      }
+    },
+    {
+      "name": "伊坪",
+      "employee_type": "パート",
+      "early_shift": false,
+      "day_shift": true,
+      "late_shift": false,
+      "night_shift": false,
+      "shift_requests": {
+        "2024-07-01": "休み",
+        "2024-07-02": "休み",
+        "2024-07-08": "休み",
+        "2024-07-09": "休み",
+        "2024-07-15": "休み",
+        "2024-07-16": "休み",
+        "2024-07-22": "休み",
+        "2024-07-23": "休み",
+        "2024-07-29": "休み",
+        "2024-07-30": "休み"
+      }
+    }
+  ],
+  "dates": ["2024-07-01", "2024-07-02", "2024-07-03","2024-07-04","2024-07-05","2024-07-06","2024-07-07","2024-07-08","2024-07-09","2024-07-10","2024-07-11","2024-07-12","2024-07-13","2024-07-14","2024-07-15","2024-07-16","2024-07-17","2024-07-18","2024-07-19","2024-07-20","2024-07-21","2024-07-22","2024-07-23","2024-07-24","2024-07-25","2024-07-26","2024-07-27","2024-07-28","2024-07-29","2024-07-30", "2024-07-31"]
+}

@@ -2,11 +2,6 @@ import pulp
 import json
 import sys
 
-# 従業員とシフト、および日数を定義
-# employees = ['岡本', '吉川', '市沢', '寺澤', '高原', '北原', '山宮', '湯沢', '荒牧', '伊坪']
-# shifts = ["早番", "日勤", "遅番", "夜勤", "夜勤明け"]
-# days = range(1, 31)  # 1ヶ月分の日数
-
 # 標準入力からデータを読み込む
 input_data = sys.stdin.read()
 data = json.loads(input_data)
@@ -24,18 +19,6 @@ days = range(1, len(dates_data) + 1)  # 日数の範囲を1から日付リスト
 # シフトのリスト
 shifts = ["早番", "日勤", "遅番", "夜勤", "夜勤明け"]
 
-# 例として、データの確認
-# print("従業員リスト:", employees)
-# print("日数の範囲:", list(days))
-# print("シフトリスト:", shifts)
-
-# 各従業員の勤務可能シフトを表示
-# for employee in employees_data:
-#     print(f"{employee['name']}の勤務可能シフト:")
-#     for shift, available in employee.items():
-#         if shift in ['early_shift', 'day_shift', 'late_shift', 'night_shift'] and available:
-#             print(f"  {shift}: {available}")
-
 # 問題の定義
 prob = pulp.LpProblem("ShiftScheduling", pulp.LpMinimize)
 
@@ -43,17 +26,17 @@ prob = pulp.LpProblem("ShiftScheduling", pulp.LpMinimize)
 assignment = pulp.LpVariable.dicts("assign", (employees, shifts, days), cat='Binary')
 rest_days = pulp.LpVariable.dicts("rest_days", employees, lowBound=0, cat='Integer')
 rest_deviation = pulp.LpVariable.dicts("rest_deviation", employees, lowBound=0)
-night_shift_penalty = pulp.LpVariable.dicts("night_shift_penalty", employees, lowBound=0, cat='Integer')
 early_late_penalty = pulp.LpVariable.dicts("early_late_penalty", employees, lowBound=0, cat='Integer')
 shift_deviation = pulp.LpVariable.dicts("shift_deviation", (employees, ["早番", "遅番"]), lowBound=0, cat='Continuous')
+request_penalty = pulp.LpVariable.dicts("request_penalty", employees, lowBound=0, cat='Continuous')
 
 # 目的関数：休日の偏りとペナルティの最小化
 prob += (
     pulp.lpSum(rest_deviation[e] for e in employees) +
-    50 * pulp.lpSum(night_shift_penalty[e] for e in employees) +
     5 * pulp.lpSum(early_late_penalty[e] for e in employees) +
-    100 * pulp.lpSum(shift_deviation[e][s] for e in employees for s in ["早番", "遅番"])
-), "Minimize total deviation and penalties"
+    100 * pulp.lpSum(shift_deviation[e][s] for e in employees for s in ["早番", "遅番"]) +
+    1000 * pulp.lpSum(request_penalty[e] for e in employees)
+), "Minimize total deviation and penalties, and maximize request satisfaction"
 
 # 各従業員の休日数を計算
 for e in employees:
@@ -66,8 +49,8 @@ for employee in employees_data:
         prob += rest_days[e] >= 9
         prob += rest_days[e] <= 11
     elif employee['employee_type'] == 'パート':
-        prob += rest_days[e] >= 11
-        prob += rest_days[e] <= 13  
+        prob += rest_days[e] >= 10
+        prob += rest_days[e] <= 12  
 
 # 基本的な制約条件の追加
 
@@ -87,16 +70,16 @@ for e in employees:
         if d + 1 in days:
             prob += assignment[e]["夜勤"][d] == assignment[e]["夜勤明け"][d+1]
 
-# 4. 最大4連勤
+# 4. 最大5連勤
 for e in employees:
-    for d in range(1, len(days) - 4 + 1):  # 連続する5日間を考慮
-        prob += pulp.lpSum([assignment[e][s][day] for s in shifts for day in range(d, d + 5)]) <= 4
+    for d in range(1, len(days) - 5 + 1):
+        prob += pulp.lpSum([assignment[e][s][day] for s in shifts for day in range(d, d + 6)]) <= 5
 
 # 5. 夜勤明けの翌日は必ず休み
 for e in employees:  # 全従業員について
-    for d in range(1, len(days)):  # 最後の日を除く（翌日が存在する範囲内）
-        # 夜勤明けの日の翌日にシフトが入っている場合にペナルティを課す
-        prob += night_shift_penalty[e] >= assignment[e]["夜勤明け"][d] + pulp.lpSum([assignment[e][s][d+1] for s in shifts]) - 1
+    for d in range(1, len(days) - 1):  # 最後の2日を除く（翌日が存在する範囲内）
+        # 夜勤明けの翌日は全てのシフトを0（休み）に設定
+        prob += assignment[e]["夜勤明け"][d] + pulp.lpSum([assignment[e][s][d+1] for s in shifts]) <= 1
 
 # 6. 遅番の翌日に早番はNG
 for e in employees:
@@ -118,14 +101,40 @@ for employee in employees_data:
             prob += assignment[e]["日勤"][d] <= 1  # 日勤に割り当て
             prob += pulp.lpSum([assignment[e][s][d] for s in ["早番", "遅番", "夜勤", "夜勤明け"]]) == 0  # 他のシフトには割り当てられない
 
+# 9. 勤務希望の達成度を計算しペナルティを追加
+for employee in employees_data:
+    e = employee['name']
+    shift_requests = {req['date']: req['shift_type'] for req in employee.get('shift_requests', [])}
+    for date, requested_shift in shift_requests.items():
+        d = dates_data.index(date) + 1
+        if requested_shift == '休み':
+            prob += request_penalty[e] >= pulp.lpSum([assignment[e][s][d] for s in shifts])
+        elif requested_shift in shifts:
+            prob += request_penalty[e] >= pulp.lpSum([assignment[e][s][d] for s in shifts if s != requested_shift])
 
-# 9. 山宮、湯沢、荒牧、伊坪は日勤のみ
-# day_shift_only_employees = ['山宮沙耶香', '湯沢ほなみ', '荒牧かおり', '伊坪裕美']
-# for e in day_shift_only_employees:
-#     for d in days:
-#         prob += assignment[e]["日勤"][d] <= 1  # 日勤に割り当てられる場合
-#         for s in ["早番", "遅番", "夜勤", "夜勤明け"]:
-#             prob += assignment[e][s][d] == 0  # 他のシフトには割り当てられない
+for employee in employees_data:
+    e = employee['name']
+    shift_requests = employee.get('shift_requests', {})
+    if shift_requests:
+        prob += (len(shift_requests) - request_penalty[e]) / len(shift_requests) >= 0.9 
+        # 90%以上の達成率を要求
+
+# 勤務希望の達成度を計算しペナルティを追加
+# for employee in employees_data:
+#     e = employee['name']
+#     shift_requests = employee.get('shift_requests', {})
+#     for date, requested_shift in shift_requests.items():
+#         d = dates_data.index(date) + 1
+#         if requested_shift == '休み':
+#             prob += request_penalty[e] >= pulp.lpSum([assignment[e][s][d] for s in shifts])
+#         elif requested_shift in shifts:
+#             prob += request_penalty[e] >= pulp.lpSum([assignment[e][s][d] for s in shifts if s != requested_shift])
+
+# for employee in employees_data:
+#     e = employee['name']
+#     shift_requests = employee.get('shift_requests', {})
+#     if shift_requests:
+#         prob += (len(shift_requests) - request_penalty[e]) / len(shift_requests) >= 0.7  # 70%以上の達成率を要求
 
 # 10. 早番と遅番は連続2日まで
 for e in employees:
@@ -140,7 +149,12 @@ for e in employees:
 
 
 # 問題を解く
-prob.solve(pulp.PULP_CBC_CMD(msg=False))
+# prob.solve(pulp.PULP_CBC_CMD(msg=False))
+# status = prob.solve(pulp.PULP_CBC_CMD(msg=False))
+status = prob.solve(pulp.PULP_CBC_CMD(msg=False, timeLimit=600, gapRel=0.005))
+
+if status != pulp.LpStatusOptimal:
+    print("最適解が見つかりませんでした。")
 
 # 結果の保存
 schedule = {e: ["休み"] * len(days) for e in employees}
@@ -154,6 +168,7 @@ if pulp.LpStatus[prob.status] == "Optimal":
 else:
     schedule = {"Error": "Solution not found"}
 
+    
 # 結果をJSON形式で出力
 print(json.dumps(schedule, ensure_ascii=False))
 
