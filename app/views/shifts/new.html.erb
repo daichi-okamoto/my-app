@@ -121,7 +121,7 @@
             <tr>
               <th class="sticky left-0 z-20 bg-white border border-gray-100 text-center text-gray py-10">委員会 <br> 予定 <br> 行事</th>
               <% @calendar.each do |c| %>
-              <td class="border border-gray-100 p-2 vertical-textarea">
+              <td class="border border-gray-100 p-2 vertical-textarea text-gray">
                 <%= @memos[c]&.content %>
               </td>
               <% end %>
@@ -138,7 +138,7 @@
                 <th class="sticky left-0 z-20 bg-white border border-gray-100 p-2 text-center text-gray"><%= e.name %></th>
               <% end %>
               <% @calendar.each do |c| %>
-              <td class="border border-gray-100 p-2 text-center">
+              <td class="border border-gray-100 p-2 text-center text-black">
                 <% shift_request = @shift_requests[e.id]&.find { |s| s.date == c } %>
                 <%= shift_request ? format_display_shift_type(shift_request.shift_type) : '' %>
               </td>

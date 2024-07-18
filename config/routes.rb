@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get 'dashboard/index'
+  get 'shifts/edit_schedule', to: 'shifts#edit_schedule', as: 'edit_schedule'
+  get 'shifts/export_excel', to: 'shifts#export_excel', defaults: { format: :xlsx }, as: 'export_excel'
   post 'shifts/create_schedule', to: 'shifts#create_schedule', as: 'create_schedule'
+  patch 'shifts/update_schedule', to: 'shifts#update_schedule', as: 'update_schedule'
   delete 'shifts/destroy_all', to: 'shifts#destroy_all', as: 'destroy_all_shifts'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
