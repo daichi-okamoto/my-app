@@ -30,7 +30,7 @@ RUN bundle install
 
 # npmパッケージをインストール
 COPY package.json yarn.lock /my-app/
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 # ホストのカレントディレクトリをコンテナにコピー
 COPY . /my-app/
