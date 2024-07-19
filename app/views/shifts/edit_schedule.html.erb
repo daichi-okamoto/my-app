@@ -150,12 +150,13 @@
                        when "早番" then "H"
                        when "日勤" then "N"
                        when "遅番" then "O"
-                       when "夜勤", "夜勤明け" then "Y"
+                       when "夜勤" then "Y"
+                       when "夜勤明け" then "明け"
                        when "休み" then "⚫️"
                        else ""
                        end %>
                     <%= form.select "shifts[#{e.id}][#{c}]",
-                        [["", ""], ["H", "H"], ["N", "N"], ["O", "O"], ["Y", "Y"], ["⚫️", "⚫️"]],
+                        [["", ""], ["H", "H"], ["N", "N"], ["O", "O"], ["Y", "Y"], ["明け", "明け"], ["⚫️", "⚫️"]],
                         { selected: current_shift },
                         class: "text-xs w-full p-0"
                     %>

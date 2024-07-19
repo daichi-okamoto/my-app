@@ -215,6 +215,7 @@ class ShiftsController < ApplicationController
     when 'N' then '日勤'
     when 'O' then '遅番'
     when 'Y' then '夜勤'
+    when '明け' then '夜勤明け'
     when '⚫️' then '休み'
     else shift_type
     end
