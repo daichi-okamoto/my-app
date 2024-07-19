@@ -116,8 +116,8 @@ for employee in employees_data:
     e = employee['name']
     shift_requests = employee.get('shift_requests', {})
     if shift_requests:
-        prob += (len(shift_requests) - request_penalty[e]) / len(shift_requests) >= 0.9 
-        # 90%以上の達成率を要求
+        prob += (len(shift_requests) - request_penalty[e]) / len(shift_requests) >= 0.7
+        # 70%以上の達成率を要求
 
 # 勤務希望の達成度を計算しペナルティを追加
 # for employee in employees_data:
