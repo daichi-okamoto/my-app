@@ -55,9 +55,6 @@ gem 'jsbundling-rails'
 # socery install
 gem 'sorcery', '0.16.3'
 
-# webpacker
-gem 'webpacker'
-
 # Excel
 gem 'caxlsx'
 gem 'axlsx_rails'
