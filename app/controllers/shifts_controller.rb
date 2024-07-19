@@ -119,6 +119,11 @@ class ShiftsController < ApplicationController
 
     begin
       parsed_output = JSON.parse(output)
+      if parsed_output.empty?
+        clear_shift_requests_and_memos(@start_date, @end_date)
+        flash[:danger] = '勤務希望がが多すぎます。再度調整してください'
+        redirect_to new_shift_request_path(year: params[:year], month: params[:month]) and return
+      end
       @schedule_output = parsed_output.empty? ? {}: parsed_output
     rescue JSON::ParserError => e
       Rails.logger.error "JSON Parse Error: #{e.message}"
@@ -213,5 +218,10 @@ class ShiftsController < ApplicationController
     when '⚫️' then '休み'
     else shift_type
     end
+  end
+
+  def clear_shift_requests_and_memos(start_date, end_date)
+    ShiftRequest.where(date: start_date..end_date).destroy_all
+    Memo.where(date: start_date..end_date).destroy_all
   end
 end
