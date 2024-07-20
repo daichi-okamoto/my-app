@@ -1,0 +1,37 @@
+<nav class="bg-white shadow-lg w-60 p-4 flex flex-col justify-between h-screen">
+  <ul>
+    <li class="mb-2">
+      <%= link_to dashboard_index_path, class:"flex items-center text-sidebar bg-gray-100 p-2 rounded" do %>
+        <img src="/images/person.svg" alt="person-icon" class="mr-2 w-6 h-6">
+        スタッフ管理
+      <% end %>
+    </li>
+    <li class="mb-2">
+      <%= link_to shifts_path, class: "flex items-center text-sidebar hover:bg-gray-100 p-2 rounded" do %>
+        <img src="/images/check-calendar.svg" alt="" class="mr-2 w-6 h-6">
+        シフト管理
+      <% end %>
+    </li>
+  </ul>
+  <ul>
+    <div class="border-t pb-4 border-gray border-opacity-30"></div>
+    <li class="mb-2">
+      <%= link_to terms_of_service_path, class: "flex items-center text-sidebar hover:bg-gray-100 p-2 rounded" do %>
+        <img src="/images/help.svg" alt="" class="mr-2 w-6 h-6">
+        お問い合わせ
+      <% end %>
+    </li>
+    <li class="mb-2">
+      <%= link_to inquiry_path, class: "flex items-center text-sidebar hover:bg-gray-100 p-2 rounded" do %>
+        <img src="/images/service.svg" alt="" class="mr-2 w-6 h-6">
+        利用規約
+      <% end %>
+    </li>
+    <li class="mb-2">
+      <%= link_to privacy_policy_path, class: "flex items-center text-sidebar hover:bg-gray-100 p-2 rounded" do %>
+        <img src="/images/privacy.svg" alt="" class="mr-2 w-6 h-6">
+        プライバシーポリシー
+      <% end %>
+    </li>
+  </ul>
+</nav>

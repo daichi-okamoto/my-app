@@ -51,6 +51,9 @@ for employee in employees_data:
     elif employee['employee_type'] == 'パート':
         prob += rest_days[e] >= 10
         prob += rest_days[e] <= 12  
+    elif employee['employee_type'] == '派遣':
+        prob += rest_days[e] >= 9
+        prob += rest_days[e] <= 11
 
 # 基本的な制約条件の追加
 
@@ -119,23 +122,6 @@ for employee in employees_data:
         prob += (len(shift_requests) - request_penalty[e]) / len(shift_requests) >= 0.7
         # 70%以上の達成率を要求
 
-# 勤務希望の達成度を計算しペナルティを追加
-# for employee in employees_data:
-#     e = employee['name']
-#     shift_requests = employee.get('shift_requests', {})
-#     for date, requested_shift in shift_requests.items():
-#         d = dates_data.index(date) + 1
-#         if requested_shift == '休み':
-#             prob += request_penalty[e] >= pulp.lpSum([assignment[e][s][d] for s in shifts])
-#         elif requested_shift in shifts:
-#             prob += request_penalty[e] >= pulp.lpSum([assignment[e][s][d] for s in shifts if s != requested_shift])
-
-# for employee in employees_data:
-#     e = employee['name']
-#     shift_requests = employee.get('shift_requests', {})
-#     if shift_requests:
-#         prob += (len(shift_requests) - request_penalty[e]) / len(shift_requests) >= 0.7  # 70%以上の達成率を要求
-
 # 10. 早番と遅番は連続2日まで
 for e in employees:
     for d in range(1, len(days) - 2 + 1):  # 連続する3日間を考慮
@@ -147,10 +133,28 @@ for e in employees:
 for e in employees:
     prob += pulp.lpSum([assignment[e]["夜勤"][d] for d in days]) <= 6
 
+# 12. 夜勤が不可の従業員に制約を追加
+for employee in employees_data:
+    if not employee.get('night_shift', False):  # 夜勤が不可
+        e = employee['name']
+        for d in days:
+            prob += assignment[e]["夜勤"][d] == 0  # 夜勤には割り当てられない
+            prob += assignment[e]["夜勤明け"][d] == 0  # 夜勤明けには割り当てられない
 
-# 問題を解く
-# prob.solve(pulp.PULP_CBC_CMD(msg=False))
-# status = prob.solve(pulp.PULP_CBC_CMD(msg=False))
+# 13. 早番が不可の従業員に制約を追加
+for employee in employees_data:
+    if not employee.get('early_shift', False):  # 早番が不可
+        e = employee['name']
+        for d in days:
+            prob += assignment[e]["早番"][d] == 0  # 早番には割り当てられない
+
+# 14. 遅番が不可の従業員に制約を追加
+for employee in employees_data:
+    if not employee.get('late_shift', False):  # 遅番が不可
+        e = employee['name']
+        for d in days:
+            prob += assignment[e]["遅番"][d] == 0  # 遅番には割り当てられない
+
 status = prob.solve(pulp.PULP_CBC_CMD(msg=False, timeLimit=600, gapRel=0.005))
 
 if status != pulp.LpStatusOptimal:
