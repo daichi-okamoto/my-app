@@ -1,81 +1,9 @@
+<% content_for(:title, 'スタッフ管理') %>
 <body class="flex flex-col h-screen">
-  <header class="shadow-sm border-b border-gray border-opacity-30">
-    <div class="navbar bg-base-100">
-      <div class="flex-1">
-        <%= link_to root_path, class: "btn btn-ghost text-xl flex items-center font-mono text-black" do %>
-        <span class="material-symbols-outlined">
-          <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#434343"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v260h-60v-70H180v430h320v60H180Zm0-550h600v-130H180v130Zm0 0v-130 130ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T902.09-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
-        </span>
-          Care Shift
-        <% end %>
-      </div>
-      <div class="flex-none">
-        <ul class="menu menu-horizontal">
-          <li class="">
-            <div class="w-16">
-              <img src="/images/bell.svg" alt="">
-            </div>
-          </li>
-          <li class="mr-2">
-            <div class="flex-none p-0">
-            <div class="dropdown dropdown-end">
-              <div tabindex="0" role="button" class="btn btn-ghost">
-                <div class="w-11 rounded-full hover:bg-blue hover:bg-opacity-30">
-                  <img alt="" src="/images/acount.svg" class="">
-                </div>
-              </div>
-              <div tabindex="0" class="z-[1] card card-compact dropdown-content w-44 bg-whitesmoke shadow rounded-sm">
-                  <div class="card-body">
-                    <%= link_to logout_path, class:"btn btn-ghost btn-sm text-black text-sm hover:text-soft-blue hover:bg-purple hover:bg-opacity-10 rounded-sm", data: { turbo_method: :delete } do %>
-                      ログアウト
-                    <% end %>
-                  </div>
-                </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </header>
+  <%= render 'layouts/header' %>
   <div class="flex flex-1 overflow-hidden">
     <!-- Sidebar -->
-    <nav class="bg-white shadow-lg w-60 p-4 flex flex-col justify-between h-screen">
-      <ul>
-        <li class="mb-2">
-          <%= link_to dashboard_index_path, class:"flex items-center text-sidebar bg-gray-100 p-2 rounded" do %>
-            <img src="/images/person.svg" alt="person-icon" class="mr-2 w-6 h-6">
-            スタッフ管理
-          <% end %>
-        </li>
-        <li class="mb-2">
-          <%= link_to shifts_path, class: "flex items-center text-sidebar hover:bg-gray-100 p-2 rounded" do %>
-            <img src="/images/check-calendar.svg" alt="" class="mr-2 w-6 h-6">
-            シフト管理
-          <% end %>
-        </li>
-      </ul>
-      <ul>
-        <div class="border-t pb-4 border-gray border-opacity-30"></div>
-        <li class="mb-2">
-          <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
-            <img src="/images/help.svg" alt="" class="mr-2 w-6 h-6">
-            お問い合わせ
-          </a>
-        </li>
-        <li class="mb-2">
-          <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
-            <img src="/images/service.svg" alt="" class="mr-2 w-6 h-6">
-            利用規約
-          </a>
-        </li>
-        <li class="mb-2">
-          <a href="#" class="flex items-center text-sidebar hover:bg-gray-100 p-2 rounded">
-            <img src="/images/privacy.svg" alt="" class="mr-2 w-6 h-6">
-            プライバシーポリシー
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <%= render 'layouts/employee_sidebar' %>
     <!-- Main Content -->
     <main class="flex-1">
       <%= render 'layouts/flash_messages' %>
@@ -89,58 +17,65 @@
       </div>
       <div class="max-w-6xl h-full">
         <div class="overflow-y-auto pl-8 h-144">
-          <table class="table table-fixed border-separate border-spacing-0">
-            <!-- head -->
-            <thead>
-              <tr class="sticky top-0 z-10 bg-white">
-                <th class="border border-b-4 border-gray-100 text-center text-black text-base">名前</th>
-                <th class="border border-b-4 border-gray-100 text-center text-black text-base">雇用形態</th>
-                <th class="border border-b-4 border-gray-100 text-center text-black text-base">勤務可能シフト</th>
-                <th class="border border-b-4 border-gray-100 text-center text-black text-base"></th>
-              </tr>
-            </thead>
-            <tbody id="sortable-table-body" data-controller="sortable">
-              <% @employees.each do |employee| %>
-                <tr class="hover:bg-whitesmoke">
-                  <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.name %></td>
-                  <% if employee.employee_type == '正社員' %>
-                    <td class="border border-gray-100 text-center text-blue text-base font-semibold"><%= employee.employee_type %></td>
-                  <% elsif employee.employee_type == 'パート' %>
-                    <td class="border border-gray-100 text-center text-soft-green text-base font-semibold"><%= employee.employee_type %></td>
-                  <% else %>
-                    <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.employee_type %></td>
-                  <% end %>
-                  <td class="border border-gray-100 text-center text-gray text-base">
-                    <div class="flex justify-center border-b-0">
-                      <% if employee.early_shift %>
-                        <div class="bg-blue text-white text-sm p-1 m-1 rounded-md border-b-0">早番</div>
-                      <% end %>
-                      <% if employee.day_shift %>
-                        <div class="bg-soft-green text-white text-sm p-1 m-1 rounded-md border-b-0">日勤</div>
-                      <% end %>
-                      <% if employee.late_shift %>
-                        <div class="bg-gray text-white text-sm p-1 m-1 rounded-md border-b-0">遅番</div>
-                      <% end %>
-                      <% if employee.night_shift %>
-                        <div class="bg-black text-white text-sm p-1 m-1 rounded-md border-b-0">夜勤</div>
-                      <% end %>
-                    </div>
-                  </td>
-                  <td class="border border-gray-100 text-center text-gray text-base">
-                    <div class="flex justify-center border-b-0">
-                      <%= link_to edit_employee_path(employee), class: "btn btn-sm btn-ghost text-blue hover:bg-gray-100 rounded-sm mx-1" do %>
-                        <img class="p-0" src="/images/edit.svg" alt=""><span>編集</span>
-                      <% end %>
-                      <%= link_to employee, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } , class: "btn btn-sm btn-ghost text-red hover:bg-gray-100 rounded-sm mx-1" do %>
-                        <img class="inline-block m-0 p-0" src="/images/delete.svg" alt=""><span>削除</span>
-                      <% end %>
-                    </div>
-                  </td>
+          <% if @employees.any? %>
+            <table class="table table-fixed border-separate border-spacing-0">
+              <!-- head -->
+              <thead>
+                <tr class="sticky top-0 z-10 bg-white">
+                  <th class="border border-b-4 border-gray-100 text-center text-black text-base">名前</th>
+                  <th class="border border-b-4 border-gray-100 text-center text-black text-base">雇用形態</th>
+                  <th class="border border-b-4 border-gray-100 text-center text-black text-base">勤務可能シフト</th>
+                  <th class="border border-b-4 border-gray-100 text-center text-black text-base"></th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody id="sortable-table-body" data-controller="sortable">
+                <% @employees.each do |employee| %>
+                  <tr class="hover:bg-whitesmoke">
+                    <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.name %></td>
+                    <% if employee.employee_type == '正社員' %>
+                      <td class="border border-gray-100 text-center text-blue text-base font-semibold"><%= employee.employee_type %></td>
+                    <% elsif employee.employee_type == 'パート' %>
+                      <td class="border border-gray-100 text-center text-soft-green text-base font-semibold"><%= employee.employee_type %></td>
+                    <% else %>
+                      <td class="border border-gray-100 text-center text-gray text-base font-semibold"><%= employee.employee_type %></td>
+                    <% end %>
+                    <td class="border border-gray-100 text-center text-gray text-base">
+                      <div class="flex justify-center border-b-0">
+                        <% if employee.early_shift %>
+                          <div class="bg-blue text-white text-sm p-1 m-1 rounded-md border-b-0">早番</div>
+                        <% end %>
+                        <% if employee.day_shift %>
+                          <div class="bg-soft-green text-white text-sm p-1 m-1 rounded-md border-b-0">日勤</div>
+                        <% end %>
+                        <% if employee.late_shift %>
+                          <div class="bg-gray text-white text-sm p-1 m-1 rounded-md border-b-0">遅番</div>
+                        <% end %>
+                        <% if employee.night_shift %>
+                          <div class="bg-black text-white text-sm p-1 m-1 rounded-md border-b-0">夜勤</div>
+                        <% end %>
+                      </div>
+                    </td>
+                    <td class="border border-gray-100 text-center text-gray text-base">
+                      <div class="flex justify-center border-b-0">
+                        <%= link_to edit_employee_path(employee), class: "btn btn-sm btn-ghost text-blue hover:bg-gray-100 rounded-sm mx-1" do %>
+                          <img class="p-0" src="/images/edit.svg" alt=""><span>編集</span>
+                        <% end %>
+                        <%= link_to employee, data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } , class: "btn btn-sm btn-ghost text-red hover:bg-gray-100 rounded-sm mx-1" do %>
+                          <img class="inline-block m-0 p-0" src="/images/delete.svg" alt=""><span>削除</span>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="flex justify-center items-center h-screen">
+              <div class="text-xl text-gray">スタッフを追加してください</div>
+            </div>
+          <% end %>
         </div>
       </div>
     </main>
-  </body>
+  </div>
+</body>

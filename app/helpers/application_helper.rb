@@ -6,4 +6,9 @@ module ApplicationHelper
     else "bg-gray"
     end
   end
+
+  def page_title(title = '')
+    base_title = 'Care Shift'
+    title.present? ? "#{title} | #{base_title}" : base_title
+  end
 end
