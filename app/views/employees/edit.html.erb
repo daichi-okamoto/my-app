@@ -1,11 +1,11 @@
 <% content_for(:title, 'スタッフ編集') %>
 <body class="flex flex-col h-screen">
   <%= render 'layouts/header' %>
-  <div class="flex flex-1">
+  <div class="flex flex-1 overflow-hidden">
     <!-- Sidebar -->
     <%= render 'layouts/employee_sidebar' %>
     <main class="flex-1 flex items-center justify-center bg-whitesmoke">
-      <div class="bg-white shadow-lg p-6 rounded w-full max-w-md my-14">
+      <div class="bg-white shadow-lg p-6 rounded w-full max-w-md my-16">
         <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
           <h2 class="text-2xl font-normal text-gray">スタッフ編集</h2>
           <%= link_to "戻る", dashboard_index_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue" %>
@@ -39,7 +39,7 @@
           <%= form.check_box :night_shift, class: "checkbox checkbox-primary rounded-sm w-5 h-5" %>
           <%= form.label :night_shift, "夜勤", class: "text-gray ml-2" %>
         </div>
-        <%= form.submit "変更", class: "btn btn-primary w-full mt-8 text-white rounded-sm text-base" %>
+        <%= form.submit "変更", class: "btn btn-primary w-full mt-6 text-white rounded-sm text-base" %>
       </div>
     <% end %>
     </main> 
