@@ -119,9 +119,9 @@ class ShiftsController < ApplicationController
 
     begin
       parsed_output = JSON.parse(output)
-      if parsed_output.empty?
+      if parsed_output.key?("Error")
         clear_shift_requests_and_memos(@start_date, @end_date)
-        flash[:danger] = '勤務希望がが多すぎます。再度調整してください'
+        flash[:danger] = 'シフトを作成できませんでした。勤務希望を再度調整してください。またはスタッフを追加してください'
         redirect_to new_shift_request_path(year: params[:year], month: params[:month]) and return
       end
       @schedule_output = parsed_output.empty? ? {}: parsed_output

@@ -158,7 +158,8 @@ for employee in employees_data:
 status = prob.solve(pulp.PULP_CBC_CMD(msg=False, timeLimit=600, gapRel=0.005))
 
 if status != pulp.LpStatusOptimal:
-    print("最適解が見つかりませんでした。")
+    print(json.dumps({"Error": "Solution not found"}))
+    sys.exit(1)
 
 # 結果の保存
 schedule = {e: ["休み"] * len(days) for e in employees}
