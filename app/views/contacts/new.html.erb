@@ -71,4 +71,32 @@
   </div>
 </body>
 <% else %>
+<%= render 'layouts/before_login_header' %>
+<main class="flex-1 flex items-center justify-center bg-whitesmoke h-screen">
+  <div class="bg-white shadow-lg p-6 rounded w-full max-w-md my-32">
+    <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-2">
+      <h2 class="text-2xl font-normal text-gray">お問い合わせフォーム</h2>
+      <%= link_to "戻る", root_path, class: "btn btn-sm border-gray border-opacity-50 bg-white text-gray rounded hover:bg-blue hover:text-white hover:border-blue" %>
+    </div>
+    <% flash.each do |type, message| %>
+      <div class="<%= flash_design(type) %> mb-2">
+        <span class="block sm:inline"><%= message %></span>
+      </div>
+    <% end %>
+    <%= form_with model: @contact, local: true do |form| %>
+  <div class="mb-4">
+    <%= form.label :name, "お名前", class: "block font-medium text-gray" %>
+    <%= form.text_field :name, class: "input input-sm input-primary rounded-sm opacity-50 w-full" %>
+  </div>
+  <div class="mb-4">
+    <%= form.label :email, "メールアドレス", class: "block font-medium text-gray" %>
+    <%= form.email_field :email, class: "input input-sm input-primary rounded-sm opacity-50 w-full"%>
+  </div>
+  <div class="mb-4">
+    <%= form.label :message, "お問い合わせ内容", class: "block font-medium text-gray" %>
+    <%= form.text_area :message, class: "textarea textarea-primary rounded-sm opacity-50 w-full"%>
+  </div>
+  <%= form.submit '送信', class: "btn btn-sm mt-2 btn-primary w-full text-white rounded-sm text-base" %>
+<% end %>
+</main> 
 <% end %>
