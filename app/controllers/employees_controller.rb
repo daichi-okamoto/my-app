@@ -14,19 +14,19 @@ class EmployeesController < ApplicationController
   end
 
   def index
-    @employees = Employee.all
+    @employees = current_user.employees
   end
 
   def show
-    @employee = Employee.find(params[:id])
+    @employee = current_user.employees.find(params[:id])
   end
 
   def edit
-    @employee = Employee.find(params[:id])
+    @employee = current_user.employees.find(params[:id])
   end
 
   def update
-    @employee = Employee.find(params[:id])
+    @employee = current_user.employees.find(params[:id])
     if @employee.update(employee_params)
       redirect_to dashboard_index_path, success: 'スタッフが更新されました'
     else
@@ -36,7 +36,7 @@ class EmployeesController < ApplicationController
   end 
   
   def destroy
-    @employee = Employee.find(params[:id])
+    @employee = current_user.employees.find(params[:id])
     @employee.destroy
     redirect_to dashboard_index_path, status: :see_other, success: 'スタッフが削除されました'
   end
@@ -44,6 +44,6 @@ class EmployeesController < ApplicationController
   private
 
   def employee_params
-    params.require(:employee).permit(:name, :employee_type, :user_id, :early_shift, :day_shift, :late_shift, :night_shift)
+    params.require(:employee).permit(:name, :employee_type, :early_shift, :day_shift, :late_shift, :night_shift)
   end
 end
