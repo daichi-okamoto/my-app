@@ -47,7 +47,8 @@ class ShiftRequestsController < ApplicationController
   end
 
   def destroy
-    @shift_request = ShiftRequest.find(params[:id])
+    # current_userに関連する勤務希望のみを削除
+    @shift_request = current_user.shift_requests.find(params[:id])
     @shift_request.destroy
     redirect_to shift_requests_path
   end
@@ -73,10 +74,11 @@ class ShiftRequestsController < ApplicationController
     year = params[:year] || params.dig(:shift_request, :year)
     month = params[:month] || params.dig(:shift_request, :month)
     set_month_data(year, month)
-     Rails.logger.debug "Year: #{year}, Month: #{month}, Start Date: #{@start_date}, End Date: #{@end_date}"
-    @employees = Employee.all
-    @shifts = Shift.all.group_by(&:employee_id)
-    @shift_requests = ShiftRequest.where(date: @start_date..@end_date)
+    Rails.logger.debug "Year: #{year}, Month: #{month}, Start Date: #{@start_date}, End Date: #{@end_date}"
+  
+    @employees = current_user.employees
+    @shifts = current_user.shifts.group_by(&:employee_id)
+    @shift_requests = current_user.shift_requests.where(date: @start_date..@end_date)
     @memos = current_user.memos.where(date: @start_date..@end_date).index_by(&:date)
   end
 end

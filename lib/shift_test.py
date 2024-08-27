@@ -4,6 +4,7 @@ import sys
 
 # 標準入力からデータを読み込む
 input_data = sys.stdin.read()
+print(f"Input data: {input_data}", file=sys.stderr) # デバッグ用
 data = json.loads(input_data)
 
 # JSONデータから従業員と日付を取得
