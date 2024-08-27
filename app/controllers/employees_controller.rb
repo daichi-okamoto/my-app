@@ -11,21 +11,25 @@ class EmployeesController < ApplicationController
       flash.now[:danger] = 'スタッフの登録に失敗しました'
       render :new, status: :unprocessable_entity
     end
-  end
+  end 
 
   def index
+    # current_userに関連する従業員のみを取得
     @employees = current_user.employees
   end
 
   def show
+    # current_userに関連する従業員のみを取得
     @employee = current_user.employees.find(params[:id])
   end
 
   def edit
+    # current_userに関連する従業員のみを取得
     @employee = current_user.employees.find(params[:id])
   end
 
   def update
+    # current_userに関連する従業員のみを取得
     @employee = current_user.employees.find(params[:id])
     if @employee.update(employee_params)
       redirect_to dashboard_index_path, success: 'スタッフが更新されました'
@@ -36,6 +40,7 @@ class EmployeesController < ApplicationController
   end 
   
   def destroy
+    # current_userに関連する従業員のみを取得
     @employee = current_user.employees.find(params[:id])
     @employee.destroy
     redirect_to dashboard_index_path, status: :see_other, success: 'スタッフが削除されました'
